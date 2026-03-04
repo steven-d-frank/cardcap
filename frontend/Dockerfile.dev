@@ -1,5 +1,5 @@
 # ==============================================================================
-# Golid Frontend - Docker Development (OPTIONAL)
+# Cardcap Frontend - Docker Development (OPTIONAL)
 # ==============================================================================
 # NOTE: This Dockerfile is only used when running:
 #   docker compose --profile frontend-docker up

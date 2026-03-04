@@ -77,12 +77,12 @@ Cloud SQL and GCS buckets are **never** deleted by the script (data loss risk). 
 
 | Resource | QA Name | Prod Name |
 |----------|---------|-----------|
-| Cloud Run (API) | `golid-api-qa` | `golid-api` |
-| Cloud Run (Web) | `golid-web-qa` | `golid-web` |
-| Cloud SQL | `golid-db-qa` | `golid-db` |
-| GCS Bucket | `golid-data-qa` | `golid-data-prod` |
-| Artifact Registry | `golid` | `golid` |
-| VPC Connector | `golid-vpc` | `golid-vpc` |
+| Cloud Run (API) | `cardcap-api-qa` | `cardcap-api` |
+| Cloud Run (Web) | `cardcap-web-qa` | `cardcap-web` |
+| Cloud SQL | `cardcap-db-qa` | `cardcap-db` |
+| GCS Bucket | `cardcap-data-qa` | `cardcap-data-prod` |
+| Artifact Registry | `cardcap` | `cardcap` |
+| VPC Connector | `cardcap-vpc` | `cardcap-vpc` |
 
 ---
 

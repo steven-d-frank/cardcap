@@ -24,7 +24,7 @@ export const PLOT_THEME = {
 };
 
 /**
- * Merges standard Golid defaults with provided Plot options
+ * Merges standard Cardcap defaults with provided Plot options
  */
 export function withTheme(options: PlotOptions): PlotOptions {
   return {

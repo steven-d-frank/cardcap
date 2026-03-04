@@ -12,9 +12,9 @@ import (
 	"github.com/redis/go-redis/v9"
 	"golang.org/x/time/rate"
 
-	"github.com/golid-ai/golid/backend/internal/apperror"
-	"github.com/golid-ai/golid/backend/internal/config"
-	"github.com/golid-ai/golid/backend/internal/logger"
+	"github.com/steven-d-frank/cardcap/backend/internal/apperror"
+	"github.com/steven-d-frank/cardcap/backend/internal/config"
+	"github.com/steven-d-frank/cardcap/backend/internal/logger"
 )
 
 // Setup configures all middleware for the Echo server.

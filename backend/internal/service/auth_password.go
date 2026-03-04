@@ -16,7 +16,7 @@ import (
 	"github.com/jackc/pgx/v5"
 	"golang.org/x/crypto/bcrypt"
 
-	"github.com/golid-ai/golid/backend/internal/apperror"
+	"github.com/steven-d-frank/cardcap/backend/internal/apperror"
 )
 
 // ============================================================================

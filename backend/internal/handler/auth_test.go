@@ -14,8 +14,8 @@ import (
 	"github.com/hibiken/asynq"
 	"github.com/labstack/echo/v4"
 
-	"github.com/golid-ai/golid/backend/internal/apperror"
-	"github.com/golid-ai/golid/backend/internal/service"
+	"github.com/steven-d-frank/cardcap/backend/internal/apperror"
+	"github.com/steven-d-frank/cardcap/backend/internal/service"
 )
 
 // =============================================================================

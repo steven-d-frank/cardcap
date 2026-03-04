@@ -1,4 +1,4 @@
-module github.com/golid-ai/golid/backend
+module github.com/steven-d-frank/cardcap/backend
 
 go 1.26.0
 

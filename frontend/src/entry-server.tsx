@@ -8,54 +8,45 @@ export default createHandler(() => (
         <head>
           <meta charset="utf-8" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <meta name="description" content="Golid — a production-ready Go + SolidJS framework with auth, 70+ components, and Cloud Run deployment." />
+          <meta name="description" content="CardCap — Market cap tracking for trading cards. Track Yu-Gi-Oh!, Pokémon, and MTG card values based on real sold prices and graded population data." />
 
-          {/* Open Graph / Social Sharing
-              NOTE: Update og:url and og:image when custom domain is configured. */}
           <meta property="og:type" content="website" />
-          <meta property="og:site_name" content="Golid" />
-          <meta property="og:title" content="Golid — Go + SolidJS Production Framework" />
-          <meta property="og:description" content="Auth, 70+ UI components, SSR, real-time SSE, opt-in Redis/OTel/Prometheus, and one-command Cloud Run deployment." />
-          <meta property="og:url" content={import.meta.env.VITE_OG_URL || "https://golid.ai"} />
+          <meta property="og:site_name" content="CardCap" />
+          <meta property="og:title" content="CardCap — Market Cap Tracking for Trading Cards" />
+          <meta property="og:description" content="Track market caps for Yu-Gi-Oh!, Pokémon, and MTG cards based on real sold prices and graded population data." />
+          <meta property="og:url" content={import.meta.env.VITE_OG_URL || "https://cardcap.gg"} />
 
-          {/* Twitter Card */}
           <meta name="twitter:card" content="summary_large_image" />
-          <meta name="twitter:title" content="Golid — Go + SolidJS Production Framework" />
-          <meta name="twitter:description" content="Auth, 70+ UI components, SSR, real-time SSE, and one-command Cloud Run deployment." />
+          <meta name="twitter:title" content="CardCap — Market Cap Tracking for Trading Cards" />
+          <meta name="twitter:description" content="Track market caps for Yu-Gi-Oh!, Pokémon, and MTG cards based on real sold prices and graded population data." />
 
-          {/* Favicon - theme-aware (light/dark swap) */}
           <link rel="icon" type="image/svg+xml" href="/images/favicon-light/favicon.svg" id="favicon" />
           <link rel="manifest" href="/images/favicon-light/site.webmanifest" />
-          <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
-          <meta name="theme-color" content="#0f1923" media="(prefers-color-scheme: dark)" />
+          <meta name="theme-color" content="#060a11" media="(prefers-color-scheme: dark)" />
+          <meta name="theme-color" content="#060a11" media="(prefers-color-scheme: light)" />
 
-          {/* Preconnect to Google Fonts for faster font loading */}
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
 
-          {/* Font stylesheets for noscript fallback */}
           <noscript>
-            <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Montserrat:wght@400;500;600;700;800;900&family=Nunito:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" />
+            <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&display=swap" />
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-sans/style.css" />
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-mono/style.css" />
             <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" />
           </noscript>
 
           <script>{`
             (function() {
               try {
-                var theme = localStorage.getItem('theme');
-                var isDark = theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches);
-                if (isDark) {
-                  document.documentElement.classList.add('dark');
-                } else {
-                  document.documentElement.classList.remove('dark');
-                }
+                document.documentElement.classList.add('dark');
                 var fav = document.getElementById('favicon');
-                if (fav) fav.href = isDark ? '/images/favicon-dark/favicon.svg' : '/images/favicon-light/favicon.svg';
+                if (fav) fav.href = '/images/favicon-dark/favicon.svg';
               } catch (e) {}
 
-              // Async font loading (avoids render-blocking stylesheets)
               var fonts = [
-                'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Montserrat:wght@400;500;600;700;800;900&family=Nunito:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap',
+                'https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&display=swap',
+                'https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-sans/style.css',
+                'https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-mono/style.css',
                 'https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap'
               ];
               fonts.forEach(function(href) {

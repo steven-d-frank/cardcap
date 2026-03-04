@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-echo "🚀 Starting golid API..."
+echo "🚀 Starting cardcap API..."
 
 # Construct DATABASE_URL if not provided but components are
 if [ -z "$DATABASE_URL" ] && [ -n "$DB_USER" ]; then
@@ -9,7 +9,7 @@ if [ -z "$DATABASE_URL" ] && [ -n "$DB_USER" ]; then
     
     DB_HOST="${DB_HOST:-localhost}"
     DB_PORT="${DB_PORT:-5432}"
-    DB_NAME="${DB_NAME:-golid}"
+    DB_NAME="${DB_NAME:-cardcap}"
     
     if [ -n "$CLOUD_SQL_INSTANCE" ]; then
         # Cloud Run: Use Unix socket

@@ -41,7 +41,7 @@ export default function Login() {
 
   return (
     <>
-      <Title>Login | Golid</Title>
+      <Title>Login | Cardcap</Title>
       <div class="flex-1 flex items-center justify-center p-4 sm:p-8">
         <div class="flex flex-col sm:flex-row items-center sm:items-stretch gap-6 sm:gap-0 w-full max-w-[760px] bg-background/60 dark:bg-midnight/80 backdrop-blur-xl border border-foreground/10 rounded-2xl shadow-lg overflow-hidden">
 
@@ -51,7 +51,7 @@ export default function Login() {
             <div class="relative flex flex-col items-center gap-3">
               <a href="/" class="outline-none group">
                 <span class="text-2xl font-bold font-montserrat text-midnight dark:text-mist group-hover:text-cta-green transition-colors duration-300">
-                  Golid
+                  Cardcap
                 </span>
               </a>
             </div>

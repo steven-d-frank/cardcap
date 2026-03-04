@@ -9,8 +9,8 @@ import (
 
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	"github.com/golid-ai/golid/backend/internal/apperror"
-	"github.com/golid-ai/golid/backend/internal/testutil"
+	"github.com/steven-d-frank/cardcap/backend/internal/apperror"
+	"github.com/steven-d-frank/cardcap/backend/internal/testutil"
 )
 
 func ptrStr(s string) string {

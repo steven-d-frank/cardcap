@@ -622,7 +622,7 @@ export const GeoPlot: Component<GeoPlotProps> = (props) => {
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
-        <div ref={renderRef} class="w-full h-full golid-location-render origin-center" />
+        <div ref={renderRef} class="w-full h-full cardcap-location-render origin-center" />
 
         {/* Tooltip */}
         <Show when={hoveredPoint()}>

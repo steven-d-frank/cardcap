@@ -37,7 +37,7 @@ export default function ForgotPassword() {
 
   return (
     <>
-      <Title>Forgot Password | Golid</Title>
+      <Title>Forgot Password | Cardcap</Title>
 
       <div class="flex-1 flex items-center justify-center p-4 sm:p-8">
         <div class="w-full max-w-md bg-background/60 dark:bg-midnight/80 backdrop-blur-xl border border-foreground/10 rounded-2xl shadow-lg p-8 sm:p-10">

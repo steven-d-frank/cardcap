@@ -8,7 +8,7 @@
 
 Golid is a full-stack Go + SolidJS framework. Downstream projects fork it and diverge. When bugs are fixed or infrastructure is improved in Golid, there is no mechanism for downstream projects to pull those changes other than manual cherry-picking.
 
-The question: should we extract shared infrastructure into publishable packages (`golid-go` Go module + `@golid/ui` npm package) so downstream projects can upgrade via `go get -u` and `npm update`?
+The question: should we extract shared infrastructure into publishable packages (`cardcap-go` Go module + `@cardcap/ui` npm package) so downstream projects can upgrade via `go get -u` and `npm update`?
 
 ## Decision
 
@@ -23,7 +23,7 @@ Extraction is deferred until at least 3 downstream projects exist or external us
 - **Only 2 consumers** (Golid + one downstream project). The maintenance cost of 4 repos, 4 CI pipelines, publish workflows, semver discipline, and speculative API design exceeds the cherry-picking cost for 2 projects.
 - **Auth service has a hard DB coupling.** `AuthService` does raw SQL against a `users` table with specific columns (`password_hash`, `verification_token`, `password_reset_selector`). Extracting it into a package requires either forcing every downstream project to have that exact schema (fragile) or designing a repository interface layer (`type UserStore interface`) that downstream projects implement. That interface design should be informed by real downstream variation, not speculation.
 - **APIs would be designed speculatively.** Golid isn't publicly launched yet. Extracting packages before having real consumers means committing to interfaces before understanding how they'll be used. Premature abstraction.
-- **Golid would become trivially thin.** If all the interesting code lives in packages, the starter is just docker-compose + example routes + CI config. At that point it's closer to a CLI scaffolder (`create-golid-app`) than a template repo — but building a CLI is even more work.
+- **Golid would become trivially thin.** If all the interesting code lives in packages, the starter is just docker-compose + example routes + CI config. At that point it's closer to a CLI scaffolder (`create-cardcap-app`) than a template repo — but building a CLI is even more work.
 
 ### Why cherry-pick works for now
 
@@ -37,17 +37,17 @@ When extraction is justified, the plan has three phases:
 
 ### V2: Extract packages (3+ consumers)
 
-**Go module** (`github.com/golid-ai/golid-go`):
+**Go module** (`github.com/steven-d-frank/cardcap-go`):
 
 - Leaf packages first (zero DB dependencies): `apperror`, `logger`, `validate`, `retry`
 - Then: `middleware`, `email`, `sse`, `queue`, `observability`, `dbpool`
 - Last (hardest): `auth` — requires designing a `UserStore` interface informed by real downstream schemas
 
-**npm package** (`@golid/ui`):
+**npm package** (`@cardcap/ui`):
 
 - Component library (atoms, molecules, organisms) with Tailwind CSS preset
 - Core API client (`createApiClient` factory) + SSE client + notification stores
-- `authApi` included (it's infrastructure, not project-specific — paired with `golid-go/auth`)
+- `authApi` included (it's infrastructure, not project-specific — paired with `cardcap-go/auth`)
 - Built with `tsup`, ESM-only, `solid-js` as peer dependency
 
 **Key design decisions for V2:**
@@ -62,7 +62,7 @@ When extraction is justified, the plan has three phases:
 
 ### V3: CLI scaffolder (public adoption)
 
-`create-golid-app` that generates a project importing from the V2 packages:
+`create-cardcap-app` that generates a project importing from the V2 packages:
 
 - Interactive prompts: auth (yes/no), email provider, queue (Redis/goroutine), SSE (yes/no)
 - Generates only the code needed for selected features

@@ -2,11 +2,11 @@
 
 ## Reporting a Vulnerability
 
-If you discover a security vulnerability in Golid, please report it responsibly.
+If you discover a security vulnerability in Cardcap, please report it responsibly.
 
 **Do NOT open a public GitHub issue for security vulnerabilities.**
 
-Instead, please use [GitHub Security Advisories](https://github.com/golid-ai/golid/security/advisories/new) or email **steven@uflex.us** with:
+Instead, please use [GitHub Security Advisories](https://github.com/steven-d-frank/cardcap/security/advisories/new) or email **steven@uflex.us** with:
 
 - A description of the vulnerability
 - Steps to reproduce
@@ -24,7 +24,7 @@ We will acknowledge receipt within 48 hours and provide a fix timeline within 7 
 
 ## Security Measures
 
-Golid includes the following security features out of the box:
+Cardcap includes the following security features out of the box:
 
 - **JWT auth** with refresh token rotation and configurable expiry
 - **Password hashing** with bcrypt (cost factor 10)

@@ -6,7 +6,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/golid-ai/golid/backend/internal/apperror"
+	"github.com/steven-d-frank/cardcap/backend/internal/apperror"
 )
 
 func TestVerifyEmail_HappyPath_Integration(t *testing.T) {

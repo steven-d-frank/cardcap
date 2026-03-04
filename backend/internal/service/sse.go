@@ -9,8 +9,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/golid-ai/golid/backend/internal/logger"
-	"github.com/golid-ai/golid/backend/internal/observability"
+	"github.com/steven-d-frank/cardcap/backend/internal/logger"
+	"github.com/steven-d-frank/cardcap/backend/internal/observability"
 )
 
 const (

@@ -1,5 +1,5 @@
 /* ============================================ */
-/* GOLID STYLES                                */
+/* CARDCAP STYLES                                */
 /* ============================================ */
 /* Fonts are loaded in entry-server.tsx using  */
 /* non-render-blocking <link> tags for better  */
@@ -362,7 +362,7 @@
 	}
 
 	h1, h2, h3, h4, h5, h6 {
-		@apply font-montserrat tracking-tight text-foreground font-bold;
+		@apply font-display tracking-tight text-foreground font-bold;
 	}
 
 	p {

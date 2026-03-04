@@ -87,7 +87,7 @@ export default function Settings() {
 
   return (
     <>
-      <Title>Settings | Golid</Title>
+      <Title>Settings | Cardcap</Title>
       <div class="p-6 sm:p-10 max-w-[1400px] mx-auto w-full space-y-6">
         <h1 class="text-2xl font-bold text-foreground">Settings</h1>
 

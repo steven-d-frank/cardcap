@@ -7,19 +7,19 @@
 apiVersion: serving.knative.dev/v1
 kind: Service
 metadata:
-  name: golid-web
+  name: cardcap-web
   labels:
-    app: golid
+    app: cardcap
     component: frontend
   annotations:
-    run.googleapis.com/description: "Golid web frontend"
+    run.googleapis.com/description: "Cardcap web frontend"
     run.googleapis.com/ingress: all
 spec:
   template:
     metadata:
       annotations:
         run.googleapis.com/execution-environment: gen2
-        run.googleapis.com/vpc-access-connector: projects/PROJECT_ID/locations/REGION/connectors/golid-vpc
+        run.googleapis.com/vpc-access-connector: projects/PROJECT_ID/locations/REGION/connectors/cardcap-vpc
         run.googleapis.com/vpc-access-egress: all-traffic
         autoscaling.knative.dev/minScale: "0"
         autoscaling.knative.dev/maxScale: "10"
@@ -27,9 +27,9 @@ spec:
     spec:
       containerConcurrency: 80
       timeoutSeconds: 300
-      serviceAccountName: golid-web@PROJECT_ID.iam.gserviceaccount.com
+      serviceAccountName: cardcap-web@PROJECT_ID.iam.gserviceaccount.com
       containers:
-        - image: REGION-docker.pkg.dev/PROJECT_ID/golid/web:TAG
+        - image: REGION-docker.pkg.dev/PROJECT_ID/cardcap/web:TAG
           ports:
             - containerPort: 8080
           resources:

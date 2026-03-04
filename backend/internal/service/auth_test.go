@@ -3,7 +3,7 @@ package service
 import (
 	"testing"
 
-	"github.com/golid-ai/golid/backend/internal/apperror"
+	"github.com/steven-d-frank/cardcap/backend/internal/apperror"
 )
 
 func TestValidateRegisterInput(t *testing.T) {

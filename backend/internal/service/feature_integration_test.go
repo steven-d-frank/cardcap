@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/golid-ai/golid/backend/internal/testutil"
+	"github.com/steven-d-frank/cardcap/backend/internal/testutil"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 

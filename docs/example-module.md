@@ -63,7 +63,7 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	"github.com/golid-ai/golid/backend/internal/apperror"
+	"github.com/steven-d-frank/cardcap/backend/internal/apperror"
 )
 
 type NoteService struct {
@@ -292,8 +292,8 @@ import (
 
 	"github.com/labstack/echo/v4"
 
-	"github.com/golid-ai/golid/backend/internal/apperror"
-	"github.com/golid-ai/golid/backend/internal/service"
+	"github.com/steven-d-frank/cardcap/backend/internal/apperror"
+	"github.com/steven-d-frank/cardcap/backend/internal/service"
 )
 
 type NoteHandler struct {

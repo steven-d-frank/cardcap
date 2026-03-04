@@ -59,7 +59,7 @@ SHIP_WEB=false
 # project, change the values in this block and the env files in config/.
 # ------------------------------------------------------------------------------
 
-PROJECT_NAME="golid"
+PROJECT_NAME="cardcap"
 
 load_env() {
   local env_file="${PROJECT_ROOT}/config/.env.${ENV}"
@@ -78,15 +78,13 @@ GCP_REGION="${REGION:-us-central1}"
 _suffix=""
 [[ "$ENV" == "qa" ]] && _suffix="-qa"
 
-declare -A RES=(
-  [api_service]="${PROJECT_NAME}-api${_suffix}"
-  [web_service]="${PROJECT_NAME}-web${_suffix}"
-  [db_instance]="${PROJECT_NAME}-db${_suffix}"
-  [db_name]="${PROJECT_NAME}"
-  [bucket]="${PROJECT_NAME}-data-${ENV}"
-  [registry]="${PROJECT_NAME}"
-  [vpc_connector]="${PROJECT_NAME}-vpc"
-)
+RES_api_service="${PROJECT_NAME}-api${_suffix}"
+RES_web_service="${PROJECT_NAME}-web${_suffix}"
+RES_db_instance="${PROJECT_NAME}-db${_suffix}"
+RES_db_name="${PROJECT_NAME}"
+RES_bucket="${PROJECT_NAME}-data-${ENV}"
+RES_registry="${PROJECT_NAME}"
+RES_vpc_connector="${PROJECT_NAME}-vpc"
 
 # Service accounts
 SA_API="${PROJECT_NAME}-api@${GCP_PROJECT}.iam.gserviceaccount.com"
@@ -95,15 +93,15 @@ SA_STORAGE="${PROJECT_NAME}-gcs@${GCP_PROJECT}.iam.gserviceaccount.com"
 
 # Scaling (prod stays warm, qa scales to zero)
 if [[ "$ENV" == "prod" ]]; then
-  SCALE_MIN=1; SCALE_MAX=10; MEM="512Mi"; CPUS="1"
+  SCALE_MIN=0; SCALE_MAX=10; MEM="512Mi"; CPUS="1"
 else
   SCALE_MIN=0; SCALE_MAX=3; MEM="512Mi"; CPUS="1"
 fi
 
 # Image tags (git SHA + timestamp for uniqueness)
 IMG_SUFFIX="$(git -C "$PROJECT_ROOT" rev-parse --short HEAD 2>/dev/null || echo none)-$(date +%s)"
-IMG_API="${GCP_REGION}-docker.pkg.dev/${GCP_PROJECT}/${RES[registry]}/api:${IMG_SUFFIX}"
-IMG_WEB="${GCP_REGION}-docker.pkg.dev/${GCP_PROJECT}/${RES[registry]}/web:${IMG_SUFFIX}"
+IMG_API="${GCP_REGION}-docker.pkg.dev/${GCP_PROJECT}/${RES_registry}/api:${IMG_SUFFIX}"
+IMG_WEB="${GCP_REGION}-docker.pkg.dev/${GCP_PROJECT}/${RES_registry}/web:${IMG_SUFFIX}"
 
 # Database credentials
 DB_USER="${DB_USER:-${PROJECT_NAME}_user}"
@@ -124,12 +122,12 @@ fail()  { printf "\033[0;31m    [fail] %s\033[0m\n" "$1"; exit 1; }
 # ------------------------------------------------------------------------------
 
 secret_exists() {
-  gcloud secrets describe "$1" --project="$GCP_PROJECT" &>/dev/null
+  gcloud secrets describe "$1" --project="$GCP_PROJECT" --quiet </dev/null &>/dev/null
 }
 
 fetch_secret() {
   local val
-  val=$(gcloud secrets versions access latest --secret="$1" --project="$GCP_PROJECT") || {
+  val=$(gcloud secrets versions access latest --secret="$1" --project="$GCP_PROJECT" --quiet </dev/null) || {
     fail "Failed to fetch secret: $1"
   }
   echo "$val"
@@ -145,30 +143,30 @@ preflight() {
   step "Pre-flight checks"
 
   # Verify gcloud is authenticated
-  gcloud auth print-identity-token &>/dev/null || fail "Not authenticated. Run: gcloud auth login"
+  gcloud auth print-identity-token --quiet </dev/null &>/dev/null || fail "Not authenticated. Run: gcloud auth login"
   ok "gcloud authenticated"
 
   export CLOUDSDK_CORE_PROJECT="$GCP_PROJECT"
   export CLOUDSDK_RUN_REGION="$GCP_REGION"
   ok "project=$GCP_PROJECT region=$GCP_REGION"
 
-  # Fetch DB password from Secret Manager (needed for DATABASE_URL construction)
-  if secret_exists "${PROJECT_NAME}-db-password-${ENV}"; then
-    DB_PASS=$(fetch_secret "${PROJECT_NAME}-db-password-${ENV}")
+  # Fetch DB password and validate secrets (only when deploying the API)
+  if [[ "$SHIP_API" == "true" ]]; then
+    if secret_exists "${PROJECT_NAME}-db-password-${ENV}"; then
+      DB_PASS=$(fetch_secret "${PROJECT_NAME}-db-password-${ENV}")
+    fi
+
+    local missing=()
+    local sm_prefix="${PROJECT_NAME}"
+    (fetch_secret "${sm_prefix}-jwt-secret-${ENV}" >/dev/null 2>&1) || missing+=("${sm_prefix}-jwt-secret-${ENV}")
+
+    if (( ${#missing[@]} > 0 )); then
+      fail "Cannot access secrets in Secret Manager: ${missing[*]}"
+    fi
+    ok "required secrets accessible in Secret Manager"
+  else
+    ok "skipping secret checks (web-only deploy)"
   fi
-
-  # Validate required secrets are accessible in Secret Manager
-  local missing=()
-  local sm_prefix="${PROJECT_NAME}"
-
-  # Subshell so that fail() exits the subshell (not the script), letting us collect all failures
-  # Note: db-password is NOT checked here — provision_database() auto-creates it if missing
-  (fetch_secret "${sm_prefix}-jwt-secret-${ENV}" >/dev/null 2>&1) || missing+=("${sm_prefix}-jwt-secret-${ENV}")
-
-  if (( ${#missing[@]} > 0 )); then
-    fail "Cannot access secrets in Secret Manager: ${missing[*]}"
-  fi
-  ok "required secrets accessible in Secret Manager"
 
   # Production gate
   if [[ "$ENV" == "prod" && "$RUN_CHECK_ONLY" == "false" ]]; then
@@ -216,11 +214,11 @@ provision_gcp_apis() {
 
 provision_registry() {
   step "Artifact Registry"
-  if gcloud artifacts repositories describe "${RES[registry]}" \
+  if gcloud artifacts repositories describe "${RES_registry}" \
       --location="$GCP_REGION" --project="$GCP_PROJECT" &>/dev/null; then
     skip "already exists"
   else
-    gcloud artifacts repositories create "${RES[registry]}" \
+    gcloud artifacts repositories create "${RES_registry}" \
       --repository-format=docker --location="$GCP_REGION" \
       --description="Container images" --project="$GCP_PROJECT"
     ok "created"
@@ -243,16 +241,16 @@ provision_service_accounts() {
 
 provision_storage() {
   step "Cloud Storage bucket"
-  if gsutil ls -b "gs://${RES[bucket]}" &>/dev/null; then
+  if gsutil ls -b "gs://${RES_bucket}" &>/dev/null; then
     skip "already exists"
   else
-    gsutil mb -p "$GCP_PROJECT" -l "$GCP_REGION" "gs://${RES[bucket]}"
+    gsutil mb -p "$GCP_PROJECT" -l "$GCP_REGION" "gs://${RES_bucket}"
     # Browser upload CORS
     local cors_tmp; cors_tmp=$(mktemp)
     cat > "$cors_tmp" <<CORS
 [{"origin":["$FRONTEND_URL"],"responseHeader":["Content-Type","Authorization","Content-Range","Accept","X-Requested-With","Content-Length"],"method":["GET","PUT","POST","DELETE","HEAD","OPTIONS"],"maxAgeSeconds":3600}]
 CORS
-    gsutil cors set "$cors_tmp" "gs://${RES[bucket]}"
+    gsutil cors set "$cors_tmp" "gs://${RES_bucket}"
     rm -f "$cors_tmp"
     ok "created with CORS"
   fi
@@ -261,11 +259,11 @@ CORS
 provision_network() {
   step "VPC connector + firewall"
 
-  if gcloud compute networks vpc-access connectors describe "${RES[vpc_connector]}" \
+  if gcloud compute networks vpc-access connectors describe "${RES_vpc_connector}" \
       --region="$GCP_REGION" --project="$GCP_PROJECT" &>/dev/null; then
     skip "VPC connector exists"
   else
-    gcloud compute networks vpc-access connectors create "${RES[vpc_connector]}" \
+    gcloud compute networks vpc-access connectors create "${RES_vpc_connector}" \
       --network=default --region="$GCP_REGION" --range=10.9.0.0/28 \
       --project="$GCP_PROJECT"
     ok "VPC connector created"
@@ -307,29 +305,29 @@ provision_database() {
     warn "Generated DB_PASSWORD and stored in Secret Manager as ${PROJECT_NAME}-db-password-${ENV}"
   fi
 
-  if gcloud sql instances describe "${RES[db_instance]}" \
+  if gcloud sql instances describe "${RES_db_instance}" \
       --project="$GCP_PROJECT" &>/dev/null; then
     skip "instance exists"
     # Sync password
     gcloud sql users set-password "$DB_USER" \
-      --instance="${RES[db_instance]}" --password="$DB_PASS" \
+      --instance="${RES_db_instance}" --password="$DB_PASS" \
       --project="$GCP_PROJECT" 2>/dev/null || \
     gcloud sql users create "$DB_USER" \
-      --instance="${RES[db_instance]}" --password="$DB_PASS" \
+      --instance="${RES_db_instance}" --password="$DB_PASS" \
       --project="$GCP_PROJECT" 2>/dev/null || true
   else
     warn "Creating Cloud SQL — this takes 5-10 minutes"
-    gcloud sql instances create "${RES[db_instance]}" \
+    gcloud sql instances create "${RES_db_instance}" \
       --database-version=POSTGRES_16 --edition=ENTERPRISE \
       --tier=db-g1-small --region="$GCP_REGION" \
       --storage-type=SSD --storage-size=10GB --storage-auto-increase \
       --availability-type=zonal --project="$GCP_PROJECT"
 
-    gcloud sql databases create "${RES[db_name]}" \
-      --instance="${RES[db_instance]}" --project="$GCP_PROJECT" || true
+    gcloud sql databases create "${RES_db_name}" \
+      --instance="${RES_db_instance}" --project="$GCP_PROJECT" || true
 
     gcloud sql users create "$DB_USER" \
-      --instance="${RES[db_instance]}" --password="$DB_PASS" \
+      --instance="${RES_db_instance}" --password="$DB_PASS" \
       --project="$GCP_PROJECT" || true
     ok "instance + database + user created"
   fi
@@ -376,7 +374,7 @@ provision_iam() {
 # ------------------------------------------------------------------------------
 
 sql_connection() {
-  gcloud sql instances describe "${RES[db_instance]}" \
+  gcloud sql instances describe "${RES_db_instance}" \
     --project="$GCP_PROJECT" --format="value(connectionName)" 2>/dev/null || echo ""
 }
 
@@ -385,7 +383,7 @@ db_url() {
   local encoded_pass
   encoded_pass=$(printf '%s' "$DB_PASS" | python3 -c "import sys, urllib.parse; print(urllib.parse.quote(sys.stdin.read(), safe=''))") || \
     fail "python3 required for URL encoding"
-  echo "postgresql://${DB_USER}:${encoded_pass}@/${RES[db_name]}?host=/cloudsql/${conn}"
+  echo "postgresql://${DB_USER}:${encoded_pass}@/${RES_db_name}?host=/cloudsql/${conn}"
 }
 
 ship_api() {
@@ -400,7 +398,7 @@ ship_api() {
     --project="$GCP_PROJECT" --quiet
 
   step "Run database migrations"
-  local job_name="${RES[api_service]}-migrate"
+  local job_name="${RES_api_service}-migrate"
 
   local job_cmd=(gcloud run jobs)
   if gcloud run jobs describe "$job_name" --region="$GCP_REGION" --project="$GCP_PROJECT" &>/dev/null; then
@@ -428,7 +426,7 @@ ship_api() {
   local env_vars="ENVIRONMENT=${ENV}"
   env_vars+=",DATABASE_URL=${url}"
   env_vars+=",GCP_PROJECT_ID=${GCP_PROJECT}"
-  env_vars+=",GCS_BUCKET_NAME=${RES[bucket]}"
+  env_vars+=",GCS_BUCKET_NAME=${RES_bucket}"
   env_vars+=",GCP_SERVICE_ACCOUNT_EMAIL=${SA_STORAGE}"
   [[ -n "${FRONTEND_URL:-}" ]]      && env_vars+=",FRONTEND_URL=${FRONTEND_URL}"
   [[ -n "${MAILGUN_DOMAIN:-}" ]]    && env_vars+=",MAILGUN_DOMAIN=${MAILGUN_DOMAIN}"
@@ -446,24 +444,24 @@ ship_api() {
   secret_exists "${sm_prefix}-stripe-secret-${ENV}"  && secrets+=",STRIPE_SECRET_KEY=${sm_prefix}-stripe-secret-${ENV}:latest"
   secret_exists "${sm_prefix}-stripe-webhook-${ENV}" && secrets+=",STRIPE_WEBHOOK_SECRET=${sm_prefix}-stripe-webhook-${ENV}:latest"
 
-  gcloud run deploy "${RES[api_service]}" \
+  gcloud run deploy "${RES_api_service}" \
     --image="$IMG_API" --platform=managed --region="$GCP_REGION" --project="$GCP_PROJECT" \
     --service-account="$SA_API" --memory="$MEM" --cpu="$CPUS" \
     --min-instances="$SCALE_MIN" --max-instances="$SCALE_MAX" \
-    --vpc-connector="${RES[vpc_connector]}" --vpc-egress=private-ranges-only \
+    --vpc-connector="${RES_vpc_connector}" --vpc-egress=private-ranges-only \
     --ingress=internal --execution-environment=gen2 \
     --add-cloudsql-instances="$conn" \
     --set-env-vars="$env_vars" \
     --set-secrets="$secrets" \
     --allow-unauthenticated --quiet
 
-  API_URL=$(gcloud run services describe "${RES[api_service]}" \
+  API_URL=$(gcloud run services describe "${RES_api_service}" \
     --platform=managed --region="$GCP_REGION" --project="$GCP_PROJECT" \
     --format='value(status.url)')
   ok "deployed: $API_URL"
 
   # Frontend SA can invoke the API
-  gcloud run services add-iam-policy-binding "${RES[api_service]}" \
+  gcloud run services add-iam-policy-binding "${RES_api_service}" \
     --member="serviceAccount:${SA_WEB}" --role=roles/run.invoker \
     --region="$GCP_REGION" --platform=managed --project="$GCP_PROJECT" &>/dev/null || true
 }
@@ -471,13 +469,10 @@ ship_api() {
 ship_web() {
   # Resolve API URL (from this run or existing service)
   if [[ -z "${API_URL:-}" ]]; then
-    API_URL=$(gcloud run services describe "${RES[api_service]}" \
+    API_URL=$(gcloud run services describe "${RES_api_service}" \
       --platform=managed --region="$GCP_REGION" --project="$GCP_PROJECT" \
       --format='value(status.url)' 2>/dev/null || echo "")
-    [[ -z "$API_URL" ]] && fail "API service not found. Deploy api first."
   fi
-
-  local api_host="${API_URL#https://}"
 
   step "Build web image"
   gcloud builds submit "$PROJECT_ROOT/frontend" \
@@ -486,25 +481,30 @@ ship_web() {
     --project="$GCP_PROJECT" --quiet
 
   step "Deploy web service"
-  gcloud run deploy "${RES[web_service]}" \
+  local web_env="NODE_ENV=production,ENVIRONMENT=${ENV}"
+  [[ -n "$API_URL" ]] && web_env+=",BACKEND_URL=${API_URL}"
+
+  gcloud run deploy "${RES_web_service}" \
     --image="$IMG_WEB" --platform=managed --region="$GCP_REGION" --project="$GCP_PROJECT" \
     --service-account="$SA_WEB" --memory="$MEM" --cpu="$CPUS" \
     --min-instances="$SCALE_MIN" --max-instances="$SCALE_MAX" \
-    --port=8080 --vpc-connector="${RES[vpc_connector]}" --vpc-egress=all-traffic \
+    --port=8080 --vpc-connector="${RES_vpc_connector}" --vpc-egress=all-traffic \
     --ingress=all --execution-environment=gen2 \
-    --set-env-vars="NODE_ENV=production,ENVIRONMENT=${ENV},BACKEND_URL=${API_URL}" \
+    --set-env-vars="$web_env" \
     --allow-unauthenticated --quiet
 
-  WEB_URL=$(gcloud run services describe "${RES[web_service]}" \
+  WEB_URL=$(gcloud run services describe "${RES_web_service}" \
     --platform=managed --region="$GCP_REGION" --project="$GCP_PROJECT" \
     --format='value(status.url)')
   ok "deployed: $WEB_URL"
 
-  # Tell the API about the frontend (CORS + email links)
-  gcloud run services update "${RES[api_service]}" \
-    --platform=managed --region="$GCP_REGION" --project="$GCP_PROJECT" \
-    --update-env-vars="FRONTEND_URL=${WEB_URL}" --quiet
-  ok "API updated with FRONTEND_URL"
+  # Tell the API about the frontend (CORS + email links) — skip if web-only deploy
+  if [[ "$SHIP_API" == "true" ]]; then
+    gcloud run services update "${RES_api_service}" \
+      --platform=managed --region="$GCP_REGION" --project="$GCP_PROJECT" \
+      --update-env-vars="FRONTEND_URL=${WEB_URL}" --quiet
+    ok "API updated with FRONTEND_URL"
+  fi
 }
 
 # ------------------------------------------------------------------------------
@@ -524,9 +524,11 @@ main() {
   provision_gcp_apis
   provision_registry
   provision_service_accounts
-  provision_storage
+  if [[ "$SHIP_API" == "true" ]]; then
+    provision_storage
+    provision_database
+  fi
   provision_network
-  provision_database
   provision_iam
 
   API_URL=""

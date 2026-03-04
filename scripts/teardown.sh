@@ -39,7 +39,7 @@ fi
 # Config (mirrors deploy.sh naming)
 # ------------------------------------------------------------------------------
 
-PROJECT_NAME="golid"
+PROJECT_NAME="cardcap"
 
 # Load env file for PROJECT_ID override
 env_file="${PROJECT_ROOT}/config/.env.${ENV}"

@@ -932,7 +932,7 @@ export default function PASCALPage() {
 
   return (
     <div class="p-6 sm:p-10 max-w-[1400px] mx-auto w-full space-y-8">
-      <Title>PASCAL_PLURAL | Golid</Title>
+      <Title>PASCAL_PLURAL | Cardcap</Title>
 
       <div>
         <h1 class="text-3xl font-bold font-montserrat text-foreground">PASCAL_PLURAL</h1>

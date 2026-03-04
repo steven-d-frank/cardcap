@@ -3,7 +3,7 @@ package validate_test
 import (
 	"testing"
 
-	"github.com/golid-ai/golid/backend/internal/validate"
+	"github.com/steven-d-frank/cardcap/backend/internal/validate"
 )
 
 func TestUUID_Valid(t *testing.T) {

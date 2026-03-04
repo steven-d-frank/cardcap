@@ -1,5 +1,5 @@
 // ============================================================================
-// GOLID COMPONENT LIBRARY - Barrel Export
+// CARDCAP COMPONENT LIBRARY - Barrel Export
 // ============================================================================
 // Export all components from their respective files.
 // Components are organized: atoms → molecules → organisms

@@ -138,7 +138,7 @@ export const PlotGraph: Component<PlotGraphProps> = (props) => {
         <div
           ref={renderRef}
           class={cn(
-            "golid-plot-graph absolute inset-0 flex flex-col items-center justify-center transition-opacity duration-500",
+            "cardcap-plot-graph absolute inset-0 flex flex-col items-center justify-center transition-opacity duration-500",
             isMeasured() ? "opacity-100" : "opacity-0"
           )}
         />

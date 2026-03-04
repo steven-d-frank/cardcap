@@ -24,8 +24,8 @@ func TestNewEmailService_Defaults(t *testing.T) {
 	if svc.config.BaseURL != "https://api.mailgun.net" {
 		t.Errorf("BaseURL = %v, want https://api.mailgun.net", svc.config.BaseURL)
 	}
-	if svc.config.FromName != "Golid" {
-		t.Errorf("FromName = %v, want Golid", svc.config.FromName)
+	if svc.config.FromName != "Cardcap" {
+		t.Errorf("FromName = %v, want Cardcap", svc.config.FromName)
 	}
 	if svc.config.FromEmail != "noreply@test.mailgun.org" {
 		t.Errorf("FromEmail = %v, want noreply@test.mailgun.org", svc.config.FromEmail)
@@ -284,8 +284,8 @@ func TestEmailService_SendEmail_Success(t *testing.T) {
 	if receivedTo != "user@example.com" {
 		t.Errorf("to = %q, want %q", receivedTo, "user@example.com")
 	}
-	if receivedSubject != "Verify your Golid email" {
-		t.Errorf("subject = %q, want %q", receivedSubject, "Verify your Golid email")
+	if receivedSubject != "Verify your Cardcap email" {
+		t.Errorf("subject = %q, want %q", receivedSubject, "Verify your Cardcap email")
 	}
 	if !strings.Contains(receivedHTML, "https://app.example.com/verify-email?token=verify-token-abc") {
 		t.Error("HTML body should contain verification URL")
@@ -319,8 +319,8 @@ func TestEmailService_SendPasswordReset_Success(t *testing.T) {
 		t.Fatalf("expected no error, got %v", err)
 	}
 
-	if receivedSubject != "Reset your Golid password" {
-		t.Errorf("subject = %q, want %q", receivedSubject, "Reset your Golid password")
+	if receivedSubject != "Reset your Cardcap password" {
+		t.Errorf("subject = %q, want %q", receivedSubject, "Reset your Cardcap password")
 	}
 	if !strings.Contains(receivedHTML, "https://app.example.com/reset-password?token=reset-token-xyz") {
 		t.Error("HTML body should contain reset URL")
@@ -420,8 +420,8 @@ func TestEmailService_WelcomeEmail(t *testing.T) {
 		t.Fatalf("expected no error, got %v", err)
 	}
 
-	if receivedSubject != "Welcome to Golid!" {
-		t.Errorf("subject = %q, want %q", receivedSubject, "Welcome to Golid!")
+	if receivedSubject != "Welcome to Cardcap!" {
+		t.Errorf("subject = %q, want %q", receivedSubject, "Welcome to Cardcap!")
 	}
 	if !strings.Contains(receivedHTML, "Steve") {
 		t.Error("HTML body should contain user's first name")

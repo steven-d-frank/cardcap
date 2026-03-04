@@ -6,7 +6,7 @@ import (
 
 	"github.com/hibiken/asynq"
 
-	"github.com/golid-ai/golid/backend/internal/logger"
+	"github.com/steven-d-frank/cardcap/backend/internal/logger"
 )
 
 var ErrNotConfigured = errors.New("queue: redis not configured")

@@ -8,7 +8,7 @@ import (
 
 	"github.com/redis/go-redis/v9"
 
-	"github.com/golid-ai/golid/backend/internal/logger"
+	"github.com/steven-d-frank/cardcap/backend/internal/logger"
 )
 
 // RedisRateLimiterStore implements Echo's RateLimiterStore using Redis.

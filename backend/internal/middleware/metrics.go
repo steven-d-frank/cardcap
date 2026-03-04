@@ -6,7 +6,7 @@ import (
 
 	"github.com/labstack/echo/v4"
 
-	"github.com/golid-ai/golid/backend/internal/observability"
+	"github.com/steven-d-frank/cardcap/backend/internal/observability"
 )
 
 // Metrics returns middleware that records Prometheus metrics for each request.

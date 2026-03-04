@@ -279,9 +279,9 @@ const config = {
         sm: "calc(var(--radius) - 4px)"
       },
       fontFamily: {
-        sans: ["Inter", ...fontFamily.sans],
-        montserrat: ["Montserrat", ...fontFamily.sans],
-        nunito: ["Nunito", ...fontFamily.sans]
+        sans: ["Geist", ...fontFamily.sans],
+        display: ["DM Sans", ...fontFamily.sans],
+        mono: ["Geist Mono", ...fontFamily.mono]
       }
     }
   }

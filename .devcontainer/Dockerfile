@@ -1,5 +1,5 @@
 # ==============================================================================
-# Golid Development Container — Go 1.26 + Node 20 + all dev tools baked in
+# Cardcap Development Container — Go 1.26 + Node 20 + all dev tools baked in
 # ==============================================================================
 
 FROM golang:1.26-bookworm

@@ -27,7 +27,7 @@ jobs:
         env:
           POSTGRES_USER: test
           POSTGRES_PASSWORD: test
-          POSTGRES_DB: golid_test
+          POSTGRES_DB: cardcap_test
         ports:
           - 5432:5432
         options: >-
@@ -65,13 +65,13 @@ jobs:
       - name: Run Migrations
         run: migrate -path migrations -database "$DATABASE_URL" up
         env:
-          DATABASE_URL: postgres://test:test@localhost:5432/golid_test?sslmode=disable
+          DATABASE_URL: postgres://test:test@localhost:5432/cardcap_test?sslmode=disable
 
       - name: Integration Tests
         run: go test -tags integration ./... -race -count=1 -coverprofile=coverage-integration.out -coverpkg=./internal/apperror/...,./internal/config/...,./internal/handler/...,./internal/middleware/...,./internal/observability/...,./internal/queue/...,./internal/service/...,./internal/validate/...
         env:
-          DATABASE_URL: postgres://test:test@localhost:5432/golid_test?sslmode=disable
-          TEST_DATABASE_URL: postgres://test:test@localhost:5432/golid_test?sslmode=disable
+          DATABASE_URL: postgres://test:test@localhost:5432/cardcap_test?sslmode=disable
+          TEST_DATABASE_URL: postgres://test:test@localhost:5432/cardcap_test?sslmode=disable
 
       - name: Merge Coverage Profiles
         run: |
@@ -198,10 +198,10 @@ jobs:
       - name: Run Migrations
         run: |
           go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@v4.18.1
-          migrate -path backend/migrations -database "postgres://dev:dev@localhost:5432/golid?sslmode=disable" up
+          migrate -path backend/migrations -database "postgres://dev:dev@localhost:5432/cardcap?sslmode=disable" up
 
       - name: Seed Data
-        run: docker compose exec -T db psql -U dev -d golid -f /dev/stdin < backend/seeds/dev_seed.sql
+        run: docker compose exec -T db psql -U dev -d cardcap -f /dev/stdin < backend/seeds/dev_seed.sql
 
       - name: Wait for Backend
         run: |

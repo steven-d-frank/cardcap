@@ -7,7 +7,7 @@ import (
 
 	"github.com/labstack/echo/v4"
 
-	"github.com/golid-ai/golid/backend/internal/apperror"
+	"github.com/steven-d-frank/cardcap/backend/internal/apperror"
 )
 
 func TestContextString(t *testing.T) {

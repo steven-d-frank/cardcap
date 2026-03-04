@@ -7,10 +7,10 @@ import (
 
 	"github.com/labstack/echo/v4"
 
-	"github.com/golid-ai/golid/backend/internal/apperror"
-	"github.com/golid-ai/golid/backend/internal/logger"
-	"github.com/golid-ai/golid/backend/internal/queue"
-	"github.com/golid-ai/golid/backend/internal/service"
+	"github.com/steven-d-frank/cardcap/backend/internal/apperror"
+	"github.com/steven-d-frank/cardcap/backend/internal/logger"
+	"github.com/steven-d-frank/cardcap/backend/internal/queue"
+	"github.com/steven-d-frank/cardcap/backend/internal/service"
 )
 
 // AuthHandler handles authentication endpoints.

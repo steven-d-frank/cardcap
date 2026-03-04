@@ -12,7 +12,7 @@ import (
 	"unicode"
 )
 
-const oldModule = "github.com/testuser/testapp/backend"
+const oldModule = "github.com/steven-d-frank/cardcap/backend"
 const oldProjectName = "golid"
 const oldGitHubRepo = "golid-ai/golid"
 const oldNPMScope = "@golid"

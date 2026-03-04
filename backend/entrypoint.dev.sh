@@ -1,15 +1,15 @@
 #!/bin/bash
 # ==============================================================================
-# Golid Backend - Development Entrypoint
+# Cardcap Backend - Development Entrypoint
 # Runs inside the devcontainer when VS Code starts
 # ==============================================================================
 
 set -e
 
-echo "🚀 Starting golid backend development environment..."
+echo "🚀 Starting cardcap backend development environment..."
 
 # Construct DATABASE_URL
-export DATABASE_URL="postgresql://${DB_USER:-dev}:${DB_PASSWORD:-dev}@${DB_HOST:-db}:${DB_PORT:-5432}/${DB_NAME:-golid}?sslmode=disable"
+export DATABASE_URL="postgresql://${DB_USER:-dev}:${DB_PASSWORD:-dev}@${DB_HOST:-db}:${DB_PORT:-5432}/${DB_NAME:-cardcap}?sslmode=disable"
 
 # Wait for database to be ready
 echo "⏳ Waiting for database..."

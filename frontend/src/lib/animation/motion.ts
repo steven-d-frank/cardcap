@@ -1,5 +1,5 @@
 /**
- * Motion One Animation Utilities for Golid
+ * Motion One Animation Utilities for Cardcap
  *
  * This module provides Motion One-based animations for component-level effects.
  * Motion One is lighter than GSAP and has a Framer Motion-like API.

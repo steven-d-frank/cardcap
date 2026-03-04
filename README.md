@@ -1,12 +1,12 @@
 <p align="center">
-  <img src="docs/images/Golid.png" alt="Golid" width="200">
+  <img src="docs/images/Cardcap.png" alt="Cardcap" width="200">
 </p>
 
-<h1 align="center">Golid</h1>
+<h1 align="center">Cardcap</h1>
 
 <p align="center">
-  <a href="https://github.com/golid-ai/golid/actions/workflows/ci.yml"><img src="https://github.com/golid-ai/golid/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
-  <a href="https://codecov.io/gh/golid-ai/golid"><img src="https://codecov.io/gh/golid-ai/golid/branch/main/graph/badge.svg" alt="codecov" /></a>
+  <a href="https://github.com/steven-d-frank/cardcap/actions/workflows/ci.yml"><img src="https://github.com/steven-d-frank/cardcap/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
+  <a href="https://codecov.io/gh/steven-d-frank/cardcap"><img src="https://codecov.io/gh/steven-d-frank/cardcap/branch/main/graph/badge.svg" alt="codecov" /></a>
   <img src="https://img.shields.io/badge/Go-1.26-00ADD8?logo=go&logoColor=white" alt="Go" />
   <img src="https://img.shields.io/badge/Echo-v4-1B9AAA?logo=go&logoColor=white" alt="Echo" />
   <img src="https://img.shields.io/badge/SolidJS-1.8-2C4F7C?logo=solid&logoColor=white" alt="SolidJS" />
@@ -24,9 +24,9 @@ A production-ready **Go + SolidJS** framework. Auth, 70+ UI components, SSR, rea
   <img src="docs/images/showcase-components.png" alt="Interactive UI components" width="49%" />
 </p>
 
-## Why Golid?
+## Why Cardcap?
 
-Most starter templates give you a folder structure and leave you to wire everything yourself. Golid gives you a working production app on day one.
+Most starter templates give you a folder structure and leave you to wire everything yourself. Cardcap gives you a working production app on day one.
 
 - **Zero to deployed in minutes** — `docker compose up` starts everything. `./scripts/deploy.sh` provisions Cloud Run, Cloud SQL, and secrets in a single command. No 200-step setup guide.
 - **Go + SolidJS > Node + React** — Go compiles to a single binary, starts in <100ms, handles 10x the concurrent connections of Node.js. SolidJS benchmarks faster than React in every metric. No vendor lock-in to Vercel.
@@ -35,7 +35,7 @@ Most starter templates give you a folder structure and leave you to wire everyth
 - **740+ tests across three layers** — Go unit + integration (real PostgreSQL), SolidJS component tests, and 22 Playwright E2E tests. 82%+ Codecov coverage. Not a scaffold — a framework that proves itself.
 - **No vendor lock-in** — Runs on Cloud Run, Fly.io, Railway, Render, or bare metal. PostgreSQL everywhere. No proprietary abstractions.
 
-| | Golid | Next.js + API | Go-only starters | Rails / Laravel |
+| | Cardcap | Next.js + API | Go-only starters | Rails / Laravel |
 |---|---|---|---|---|
 | Full-stack type safety | Go + TypeScript ([OpenAPI spec](backend/openapi.yaml) with type generation pipeline) | TypeScript (tRPC/Zod) | Go only | Ruby/PHP |
 | Production UI library | 70+ components | BYO | None | Blade/Livewire |
@@ -49,7 +49,7 @@ Most starter templates give you a folder structure and leave you to wire everyth
 
 ```bash
 # 1. Clone + setup (generates JWT secret, installs frontend deps)
-git clone https://github.com/golid-ai/golid.git my-project
+git clone https://github.com/steven-d-frank/cardcap.git my-project
 cd my-project
 make setup
 

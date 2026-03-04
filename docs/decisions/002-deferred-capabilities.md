@@ -78,13 +78,13 @@ After completing the V1 framework (auth, 70+ components, CI/CD, 82%+ test covera
 
 **Trigger:** Users report slow installs or bloated production bundles on projects that don't use the showcase components. Implementation: either move showcase deps to `devDependencies` and gate their imports, or offer `--template minimal` in the CLI (see item 9).
 
-### 9. CLI Scaffolding (npx create-golid)
+### 9. CLI Scaffolding (npx create-cardcap)
 
-**What:** A `create-golid` CLI (like `create-next-app` or `create-solid`) that initializes a new project with interactive prompts, replacing the current fork + rename tool workflow.
+**What:** A `create-cardcap` CLI (like `create-next-app` or `create-solid`) that initializes a new project with interactive prompts, replacing the current fork + rename tool workflow.
 
 **Why defer:** The rename tool handles the core use case (fork, rebrand, build) and is tested as part of the codebase. A publishable CLI requires npm package publishing, versioning independent of the framework, template hosting, and ongoing maintenance of the scaffolding logic outside the monorepo. ADR-001 covers the broader package extraction strategy.
 
-**Trigger:** Community adoption demands smoother onboarding than fork + rename, or the framework needs template variants (minimal vs full) that a CLI can present as choices. Implementation: `create-golid` npm package using `prompts` + `degit` or similar, with the rename tool's logic embedded.
+**Trigger:** Community adoption demands smoother onboarding than fork + rename, or the framework needs template variants (minimal vs full) that a CLI can present as choices. Implementation: `create-cardcap` npm package using `prompts` + `degit` or similar, with the rename tool's logic embedded.
 
 ### 10. Cross-Browser E2E Testing
 

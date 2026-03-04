@@ -30,7 +30,7 @@ export function Footer(props: FooterProps) {
         >
           <div class="flex items-center justify-center">
             <span class="text-xs text-muted-foreground/60">
-              &copy; {currentYear} Golid. All Rights Reserved.
+              &copy; {currentYear} Cardcap. All Rights Reserved.
             </span>
           </div>
         </footer>
@@ -53,7 +53,7 @@ export function Footer(props: FooterProps) {
 
           {/* Right: Copyright */}
           <span class="text-xs text-muted-foreground/60">
-            &copy; {currentYear} Golid. All Rights Reserved.
+            &copy; {currentYear} Cardcap. All Rights Reserved.
           </span>
         </div>
       </footer>

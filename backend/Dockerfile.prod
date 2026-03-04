@@ -1,5 +1,5 @@
 # ==============================================================================
-# Golid API - Production Dockerfile
+# Cardcap API - Production Dockerfile
 # Multi-stage build for minimal image (~15MB)
 # ==============================================================================
 
@@ -38,8 +38,8 @@ FROM alpine:3.21
 RUN apk --no-cache add ca-certificates tzdata
 
 # Create non-root user
-RUN addgroup -g 1000 -S golid && \
-    adduser -u 1000 -S golid -G golid
+RUN addgroup -g 1000 -S cardcap && \
+    adduser -u 1000 -S cardcap -G cardcap
 
 WORKDIR /app
 
@@ -51,10 +51,10 @@ COPY entrypoint.sh .
 
 # Set permissions
 RUN chmod +x entrypoint.sh && \
-    chown -R golid:golid /app
+    chown -R cardcap:cardcap /app
 
 # Switch to non-root user
-USER golid
+USER cardcap
 
 # Cloud Run uses PORT env var
 ENV PORT=8080

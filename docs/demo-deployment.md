@@ -13,19 +13,19 @@ Deploy a live demo instance for framework evaluation.
 ```bash
 # Deploy backend
 cd backend
-fly launch --name golid-demo-api
+fly launch --name cardcap-demo-api
 fly secrets set \
   DATABASE_URL="postgres://..." \
   JWT_SECRET="demo-jwt-secret-at-least-32-characters" \
   ENVIRONMENT="production" \
-  FRONTEND_URL="https://golid-demo-web.fly.dev"
+  FRONTEND_URL="https://cardcap-demo-web.fly.dev"
 fly deploy
 
 # Deploy frontend
 cd ../frontend
-fly launch --name golid-demo-web
+fly launch --name cardcap-demo-web
 fly secrets set \
-  BACKEND_URL="https://golid-demo-api.fly.dev" \
+  BACKEND_URL="https://cardcap-demo-api.fly.dev" \
   VITE_DEMO_MODE="true"
 fly deploy
 ```

@@ -95,7 +95,7 @@ export default function ResetPassword() {
 
   return (
     <>
-      <Title>Reset Password | Golid</Title>
+      <Title>Reset Password | Cardcap</Title>
 
       <div class="w-full max-w-md">
         <Switch>

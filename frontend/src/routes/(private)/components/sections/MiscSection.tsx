@@ -172,10 +172,10 @@ const boxData = ["Tech", "Marketing", "Sales", "Design"].flatMap((dept) =>
 
 // Tree: Network hierarchy
 const treeData = [
-  { id: "Golid/Alpha Co/Marketing/Team A" }, { id: "Golid/Alpha Co/Marketing/Team B" },
-  { id: "Golid/Alpha Co/Design/Team C" }, { id: "Golid/Beta Inc/Tech/Team D" },
-  { id: "Golid/Beta Inc/Tech/Team E" }, { id: "Golid/Beta Inc/Sales/Team F" },
-  { id: "Golid/Gamma LLC/Tech/Team G" },
+  { id: "Cardcap/Alpha Co/Marketing/Team A" }, { id: "Cardcap/Alpha Co/Marketing/Team B" },
+  { id: "Cardcap/Alpha Co/Design/Team C" }, { id: "Cardcap/Beta Inc/Tech/Team D" },
+  { id: "Cardcap/Beta Inc/Tech/Team E" }, { id: "Cardcap/Beta Inc/Sales/Team F" },
+  { id: "Cardcap/Gamma LLC/Tech/Team G" },
 ];
 
 // Race: Organization growth

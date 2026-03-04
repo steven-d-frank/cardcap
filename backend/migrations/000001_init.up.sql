@@ -1,4 +1,4 @@
--- Golid Database Schema
+-- Cardcap Database Schema
 -- PostgreSQL 16
 -- Migration: 000001_init
 -- ============================================================================

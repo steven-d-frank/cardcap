@@ -17,7 +17,7 @@ That's it. Everything else (Go, Node, PostgreSQL, migrations, seed data) is hand
 ## Option A: DevContainer (Recommended)
 
 ```bash
-git clone https://github.com/golid-ai/golid.git my-project
+git clone https://github.com/steven-d-frank/cardcap.git my-project
 cd my-project
 ```
 
@@ -35,7 +35,7 @@ The DevContainer will:
 ## Option B: Docker Compose Only
 
 ```bash
-git clone https://github.com/golid-ai/golid.git my-project
+git clone https://github.com/steven-d-frank/cardcap.git my-project
 cd my-project
 docker compose up
 ```

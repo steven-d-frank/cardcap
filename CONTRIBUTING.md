@@ -1,4 +1,4 @@
-# Contributing to Golid
+# Contributing to Cardcap
 
 Thanks for your interest in contributing! This document covers the basics.
 
@@ -6,7 +6,7 @@ Thanks for your interest in contributing! This document covers the basics.
 
 ```bash
 # Clone and start
-git clone https://github.com/golid-ai/golid.git
+git clone https://github.com/steven-d-frank/cardcap.git
 cd golid
 docker compose up
 

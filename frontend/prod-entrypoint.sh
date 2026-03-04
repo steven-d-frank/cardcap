@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-echo "🚀 Starting golid frontend..."
+echo "🚀 Starting cardcap frontend..."
 
 # Log environment info
 echo "📋 Environment:"

@@ -1,5 +1,5 @@
 /**
- * Animation Module for Golid
+ * Animation Module for Cardcap
  *
  * Provides two animation libraries:
  * - GSAP: For complex page-level animations, scroll triggers, and timelines

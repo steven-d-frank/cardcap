@@ -15,14 +15,14 @@ import (
 	"github.com/redis/go-redis/v9"
 	"go.opentelemetry.io/contrib/instrumentation/github.com/labstack/echo/otelecho"
 
-	"github.com/golid-ai/golid/backend/internal/config"
-	"github.com/golid-ai/golid/backend/internal/db"
-	"github.com/golid-ai/golid/backend/internal/handler"
-	"github.com/golid-ai/golid/backend/internal/logger"
-	"github.com/golid-ai/golid/backend/internal/middleware"
-	"github.com/golid-ai/golid/backend/internal/observability"
-	"github.com/golid-ai/golid/backend/internal/queue"
-	"github.com/golid-ai/golid/backend/internal/service"
+	"github.com/steven-d-frank/cardcap/backend/internal/config"
+	"github.com/steven-d-frank/cardcap/backend/internal/db"
+	"github.com/steven-d-frank/cardcap/backend/internal/handler"
+	"github.com/steven-d-frank/cardcap/backend/internal/logger"
+	"github.com/steven-d-frank/cardcap/backend/internal/middleware"
+	"github.com/steven-d-frank/cardcap/backend/internal/observability"
+	"github.com/steven-d-frank/cardcap/backend/internal/queue"
+	"github.com/steven-d-frank/cardcap/backend/internal/service"
 )
 
 func main() {
@@ -129,6 +129,7 @@ func main() {
 	userHandler := handler.NewUserHandler(userService)
 	sseHandler := handler.NewSSEHandler(sseHub, cfg.SSEKeepaliveInterval)
 	featureHandler := handler.NewFeatureHandler(featureService)
+	waitlistHandler := handler.NewWaitlistHandler(pool)
 
 	// Echo
 	e := echo.New()
@@ -158,6 +159,9 @@ func main() {
 
 	// Public feature flags endpoint (returns {key: bool} map, no auth required)
 	api.GET("/features", featureHandler.ListEnabled)
+
+	// Waitlist (public, no auth)
+	api.POST("/waitlist", waitlistHandler.Subscribe)
 
 	// Public auth routes (with strict rate limiting)
 	authGroup := api.Group("/auth")

@@ -39,7 +39,7 @@ export default function VerifyEmail() {
 
   return (
     <>
-      <Title>Verify Email | Golid</Title>
+      <Title>Verify Email | Cardcap</Title>
 
       <div class="w-full max-w-md">
         <Switch>

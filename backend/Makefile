@@ -1,4 +1,4 @@
-# Golid Backend Makefile
+# Cardcap Backend Makefile
 
 .PHONY: all build dev test test-unit test-integration lint sqlc swagger migrate clean help
 

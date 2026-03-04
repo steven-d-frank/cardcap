@@ -7,8 +7,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/golid-ai/golid/backend/internal/apperror"
-	"github.com/golid-ai/golid/backend/internal/testutil"
+	"github.com/steven-d-frank/cardcap/backend/internal/apperror"
+	"github.com/steven-d-frank/cardcap/backend/internal/testutil"
 )
 
 const testJWTSecret = "test-jwt-secret-that-is-at-least-32-characters-long!"

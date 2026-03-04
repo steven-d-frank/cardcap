@@ -11,7 +11,7 @@ Golid runs on Google Cloud Platform with the following architecture:
                               │
                               ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│  Cloud Run: golid-web (Frontend)                                │
+│  Cloud Run: cardcap-web (Frontend)                                │
 │  - SolidStart SSR                                               │
 │  - Ingress: all (public)                                        │
 │  - 512Mi / 1 CPU                                                │
@@ -19,7 +19,7 @@ Golid runs on Google Cloud Platform with the following architecture:
                               │
                               ▼ (VPC Connector)
 ┌─────────────────────────────────────────────────────────────────┐
-│  Cloud Run: golid-api (Backend)                                 │
+│  Cloud Run: cardcap-api (Backend)                                 │
 │  - Go API server                                                │
 │  - Ingress: internal only                                       │
 │  - 512Mi / 1 CPU                                                │
@@ -27,7 +27,7 @@ Golid runs on Google Cloud Platform with the following architecture:
                               │
                               ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│  Cloud SQL: golid-db                                            │
+│  Cloud SQL: cardcap-db                                            │
 │  - PostgreSQL 16                                                │
 │  - us-central1                                                  │
 └─────────────────────────────────────────────────────────────────┘
@@ -42,7 +42,7 @@ Golid runs on Google Cloud Platform with the following architecture:
 | **Project ID**    | `your-project-qa` (QA) / `your-project-prod` (prod) |
 | **Region**        | `us-central1`                                       |
 | **VPC Network**   | `default`                                           |
-| **VPC Connector** | `golid-vpc`                                         |
+| **VPC Connector** | `cardcap-vpc`                                         |
 
 ### Required APIs
 
@@ -106,7 +106,7 @@ Non-sensitive config (`ENVIRONMENT`, `FRONTEND_URL`, `MAILGUN_DOMAIN`, etc.) sta
 
 ### Naming Convention
 
-`{project}-{secret-name}-{env}` — e.g. `golid-jwt-secret-qa`, `golid-db-password-prod`.
+`{project}-{secret-name}-{env}` — e.g. `cardcap-jwt-secret-qa`, `cardcap-db-password-prod`.
 
 The env suffix prevents collisions when QA and prod share a GCP project.
 
@@ -114,11 +114,11 @@ The env suffix prevents collisions when QA and prod share a GCP project.
 
 | Secret                       | Env Var                            | Method            | Notes                                                                  |
 | ---------------------------- | ---------------------------------- | ----------------- | ---------------------------------------------------------------------- |
-| `golid-jwt-secret-{env}`     | `JWT_SECRET`                       | `--set-secrets`   | Required. Cloud Run injects at startup.                                |
-| `golid-db-password-{env}`    | (used to construct `DATABASE_URL`) | Deploy-time fetch | Required. Fetched by `deploy.sh`, combined with Cloud SQL socket path. |
-| `golid-mailgun-key-{env}`    | `MAILGUN_API_KEY`                  | `--set-secrets`   | Optional. Skipped if not in SM.                                        |
-| `golid-stripe-secret-{env}`  | `STRIPE_SECRET_KEY`                | `--set-secrets`   | Optional. Skipped if not in SM.                                        |
-| `golid-stripe-webhook-{env}` | `STRIPE_WEBHOOK_SECRET`            | `--set-secrets`   | Optional. Skipped if not in SM.                                        |
+| `cardcap-jwt-secret-{env}`     | `JWT_SECRET`                       | `--set-secrets`   | Required. Cloud Run injects at startup.                                |
+| `cardcap-db-password-{env}`    | (used to construct `DATABASE_URL`) | Deploy-time fetch | Required. Fetched by `deploy.sh`, combined with Cloud SQL socket path. |
+| `cardcap-mailgun-key-{env}`    | `MAILGUN_API_KEY`                  | `--set-secrets`   | Optional. Skipped if not in SM.                                        |
+| `cardcap-stripe-secret-{env}`  | `STRIPE_SECRET_KEY`                | `--set-secrets`   | Optional. Skipped if not in SM.                                        |
+| `cardcap-stripe-webhook-{env}` | `STRIPE_WEBHOOK_SECRET`            | `--set-secrets`   | Optional. Skipped if not in SM.                                        |
 
 **`--set-secrets`**: Cloud Run resolves the secret at container startup. The value never appears in `gcloud run services describe` output.
 
@@ -128,7 +128,7 @@ The env suffix prevents collisions when QA and prod share a GCP project.
 
 For project-specific secrets (e.g. BoldSign, future integrations), follow the same pattern:
 
-1. Create the secret: `echo -n "value" | gcloud secrets create golid-{name}-{env} --data-file=- --project=PROJECT`
+1. Create the secret: `echo -n "value" | gcloud secrets create cardcap-{name}-{env} --data-file=- --project=PROJECT`
 2. Add a `secret_exists` guard + append to the `secrets` string in `ship_api()` in `deploy.sh`
 3. Add the field to `config.go` + pass from `cfg` in `main.go`
 
@@ -145,13 +145,13 @@ gcloud secrets list --project=your-project-qa
 gcloud services enable secretmanager.googleapis.com --project=your-project-qa
 
 # JWT secret
-openssl rand -base64 32 | gcloud secrets create golid-jwt-secret-qa --data-file=- --project=your-project-qa
+openssl rand -base64 32 | gcloud secrets create cardcap-jwt-secret-qa --data-file=- --project=your-project-qa
 
 # DB password (also auto-created by deploy.sh if provisioning a new database)
-echo -n 'your-db-password' | gcloud secrets create golid-db-password-qa --data-file=- --project=your-project-qa
+echo -n 'your-db-password' | gcloud secrets create cardcap-db-password-qa --data-file=- --project=your-project-qa
 
 # Optional: Mailgun API key
-echo -n 'mg-api-key' | gcloud secrets create golid-mailgun-key-qa --data-file=- --project=your-project-qa
+echo -n 'mg-api-key' | gcloud secrets create cardcap-mailgun-key-qa --data-file=- --project=your-project-qa
 ```
 
 ### Rotate a Secret
@@ -159,7 +159,7 @@ echo -n 'mg-api-key' | gcloud secrets create golid-mailgun-key-qa --data-file=- 
 Add a new version and redeploy. `--set-secrets` uses `:latest`, so the new version is picked up automatically.
 
 ```bash
-echo -n 'new-value' | gcloud secrets versions add golid-jwt-secret-qa --data-file=- --project=your-project-qa
+echo -n 'new-value' | gcloud secrets versions add cardcap-jwt-secret-qa --data-file=- --project=your-project-qa
 ./scripts/deploy.sh qa api
 ```
 
@@ -168,7 +168,7 @@ Old versions can be disabled: `gcloud secrets versions disable VERSION --secret=
 ### View Secret Value
 
 ```bash
-gcloud secrets versions access latest --secret=golid-jwt-secret-qa --project=your-project-qa
+gcloud secrets versions access latest --secret=cardcap-jwt-secret-qa --project=your-project-qa
 ```
 
 ### Pre-Deploy Validation
@@ -187,12 +187,12 @@ This validates that required secrets are **accessible** (not just that they exis
 
 | Property          | Value                                  |
 | ----------------- | -------------------------------------- |
-| **Instance Name** | `golid-db-qa` (QA) / `golid-db` (prod) |
+| **Instance Name** | `cardcap-db-qa` (QA) / `cardcap-db` (prod) |
 | **Version**       | PostgreSQL 16                          |
 | **Tier**          | `db-g1-small`                          |
 | **Region**        | `us-central1`                          |
-| **Database**      | `golid`                                |
-| **User**          | `golid_user`                           |
+| **Database**      | `cardcap`                                |
+| **User**          | `cardcap_user`                           |
 
 ### Connect via Cloud SQL Proxy
 
@@ -201,16 +201,16 @@ This validates that required secrets are **accessible** (not just that they exis
 brew install cloud-sql-proxy
 
 # Connect (in separate terminal)
-cloud-sql-proxy your-project-qa:us-central1:golid-db-qa
+cloud-sql-proxy your-project-qa:us-central1:cardcap-db-qa
 
 # Then connect with psql
-psql "postgres://golid_user:PASSWORD@localhost:5432/golid"
+psql "postgres://cardcap_user:PASSWORD@localhost:5432/cardcap"
 ```
 
 ### Connect via gcloud
 
 ```bash
-gcloud sql connect golid-db-qa --user=golid_user --project=your-project-qa
+gcloud sql connect cardcap-db-qa --user=cardcap_user --project=your-project-qa
 ```
 
 ### Create New Database Instance
@@ -220,7 +220,7 @@ gcloud sql connect golid-db-qa --user=golid_user --project=your-project-qa
 DB_PASSWORD=$(openssl rand -base64 24 | tr -d '/+=')
 
 # Create instance
-gcloud sql instances create golid-db-qa \
+gcloud sql instances create cardcap-db-qa \
   --database-version=POSTGRES_16 \
   --edition=ENTERPRISE \
   --tier=db-g1-small \
@@ -232,21 +232,21 @@ gcloud sql instances create golid-db-qa \
   --project=your-project-qa
 
 # Create database
-gcloud sql databases create golid --instance=golid-db-qa --project=your-project-qa
+gcloud sql databases create cardcap --instance=cardcap-db-qa --project=your-project-qa
 
 # Create user
-gcloud sql users create golid_user \
-  --instance=golid-db-qa --password="${DB_PASSWORD}" --project=your-project-qa
+gcloud sql users create cardcap_user \
+  --instance=cardcap-db-qa --password="${DB_PASSWORD}" --project=your-project-qa
 
 # Store password in Secret Manager
-echo -n "${DB_PASSWORD}" | gcloud secrets create golid-db-password-qa \
+echo -n "${DB_PASSWORD}" | gcloud secrets create cardcap-db-password-qa \
   --data-file=- --project=your-project-qa
 ```
 
 ### Delete Instance (⚠️ Destructive)
 
 ```bash
-gcloud sql instances delete golid-db-qa --project=your-project-qa --quiet
+gcloud sql instances delete cardcap-db-qa --project=your-project-qa --quiet
 ```
 
 ---
@@ -257,16 +257,16 @@ gcloud sql instances delete golid-db-qa --project=your-project-qa --quiet
 
 | Property   | Value                                           |
 | ---------- | ----------------------------------------------- |
-| **Name**   | `golid-data-qa` (QA) / `golid-data-prod` (prod) |
+| **Name**   | `cardcap-data-qa` (QA) / `cardcap-data-prod` (prod) |
 | **Region** | `us-central1`                                   |
 | **CORS**   | Enabled (all origins, standard methods)         |
 
-The bucket is provisioned automatically by `deploy.sh`. The `golid-gcs` service account has `roles/storage.objectAdmin` on the bucket. The backend API creates signed URLs via `roles/iam.serviceAccountTokenCreator` on the storage SA.
+The bucket is provisioned automatically by `deploy.sh`. The `cardcap-gcs` service account has `roles/storage.objectAdmin` on the bucket. The backend API creates signed URLs via `roles/iam.serviceAccountTokenCreator` on the storage SA.
 
 ### View Bucket
 
 ```bash
-gsutil ls -b gs://golid-data-qa
+gsutil ls -b gs://cardcap-data-qa
 ```
 
 ---
@@ -275,16 +275,16 @@ gsutil ls -b gs://golid-data-qa
 
 | Account       | Email                                               | Purpose                         |
 | ------------- | --------------------------------------------------- | ------------------------------- |
-| Backend API   | `golid-api@your-project-qa.iam.gserviceaccount.com` | Runs backend Cloud Run service  |
-| Frontend Web  | `golid-web@your-project-qa.iam.gserviceaccount.com` | Runs frontend Cloud Run service |
-| Cloud Storage | `golid-gcs@your-project-qa.iam.gserviceaccount.com` | Object storage operations       |
+| Backend API   | `cardcap-api@your-project-qa.iam.gserviceaccount.com` | Runs backend Cloud Run service  |
+| Frontend Web  | `cardcap-web@your-project-qa.iam.gserviceaccount.com` | Runs frontend Cloud Run service |
+| Cloud Storage | `cardcap-gcs@your-project-qa.iam.gserviceaccount.com` | Object storage operations       |
 
 ### Backend SA Roles
 
 - `roles/logging.logWriter` - Write logs
 - `roles/cloudsql.client` - Connect to Cloud SQL
 - `roles/secretmanager.secretAccessor` - Access secrets from Secret Manager
-- `roles/iam.serviceAccountTokenCreator` (on `golid-gcs` SA) - Create signed URLs for file uploads
+- `roles/iam.serviceAccountTokenCreator` (on `cardcap-gcs` SA) - Create signed URLs for file uploads
 
 ---
 
@@ -300,23 +300,23 @@ gcloud run services list --project=your-project-qa --region=us-central1
 
 ```bash
 # Backend logs
-gcloud run services logs read golid-api-qa --region=us-central1 --project=your-project-qa
+gcloud run services logs read cardcap-api-qa --region=us-central1 --project=your-project-qa
 
 # Frontend logs
-gcloud run services logs read golid-web-qa --region=us-central1 --project=your-project-qa
+gcloud run services logs read cardcap-web-qa --region=us-central1 --project=your-project-qa
 
 # Stream logs (tail -f)
-gcloud run services logs tail golid-api-qa --region=us-central1 --project=your-project-qa
+gcloud run services logs tail cardcap-api-qa --region=us-central1 --project=your-project-qa
 ```
 
 ### Get Service URLs
 
 ```bash
 # Frontend (public)
-gcloud run services describe golid-web-qa --region=us-central1 --format='value(status.url)' --project=your-project-qa
+gcloud run services describe cardcap-web-qa --region=us-central1 --format='value(status.url)' --project=your-project-qa
 
 # Backend (internal only)
-gcloud run services describe golid-api-qa --region=us-central1 --format='value(status.url)' --project=your-project-qa
+gcloud run services describe cardcap-api-qa --region=us-central1 --format='value(status.url)' --project=your-project-qa
 ```
 
 ### Delete Service
@@ -335,7 +335,7 @@ The VPC connector allows Cloud Run services to communicate with each other inter
 
 | Property     | Value         |
 | ------------ | ------------- |
-| **Name**     | `golid-vpc`   |
+| **Name**     | `cardcap-vpc`   |
 | **Network**  | `default`     |
 | **IP Range** | `10.9.0.0/28` |
 
@@ -349,8 +349,8 @@ gcloud compute networks vpc-access connectors list --region=us-central1 --projec
 
 | Rule             | Direction | Ports          | Purpose            |
 | ---------------- | --------- | -------------- | ------------------ |
-| `golid-vpc-dns`  | EGRESS    | 53/tcp, 53/udp | DNS resolution     |
-| `golid-internal` | INGRESS   | 8080/tcp       | Frontend → Backend |
+| `cardcap-vpc-dns`  | EGRESS    | 53/tcp, 53/udp | DNS resolution     |
+| `cardcap-internal` | INGRESS   | 8080/tcp       | Frontend → Backend |
 
 ---
 
@@ -363,13 +363,13 @@ Container images are stored in Artifact Registry.
 gcloud artifacts repositories list --location=us-central1 --project=your-project-qa
 
 # List images
-gcloud artifacts docker images list us-central1-docker.pkg.dev/your-project-qa/golid --project=your-project-qa
+gcloud artifacts docker images list us-central1-docker.pkg.dev/your-project-qa/cardcap --project=your-project-qa
 
 # Delete old images (keep last 5)
-gcloud artifacts docker images list us-central1-docker.pkg.dev/your-project-qa/golid \
+gcloud artifacts docker images list us-central1-docker.pkg.dev/your-project-qa/cardcap \
   --sort-by=~CREATE_TIME --limit=999 --format='value(DIGEST)' | \
   tail -n +6 | \
-  xargs -I {} gcloud artifacts docker images delete us-central1-docker.pkg.dev/your-project-qa/golid@{} --quiet
+  xargs -I {} gcloud artifacts docker images delete us-central1-docker.pkg.dev/your-project-qa/cardcap@{} --quiet
 ```
 
 ---
@@ -395,7 +395,7 @@ gcloud compute networks vpc-access connectors delete CONNECTOR_NAME --region=us-
 
 1. Check VPC connector is in READY state
 2. Verify backend ingress is set to `internal`
-3. Check firewall rule `golid-internal` exists
+3. Check firewall rule `cardcap-internal` exists
 4. Ensure frontend uses VPC connector with `--vpc-egress all-traffic`
 
 ### Database Connection Failed
@@ -409,7 +409,7 @@ gcloud compute networks vpc-access connectors delete CONNECTOR_NAME --region=us-
 2. Check DB password secret exists and is accessible:
 
    ```bash
-   gcloud secrets versions access latest --secret=golid-db-password-qa --project=your-project-qa
+   gcloud secrets versions access latest --secret=cardcap-db-password-qa --project=your-project-qa
    ```
 
 3. Ensure backend SA has `roles/cloudsql.client` role

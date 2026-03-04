@@ -1,5 +1,5 @@
 {
-  "name": "Golid Development",
+  "name": "Cardcap Development",
   "dockerComposeFile": ["../docker-compose.yml", "docker-compose.yml"],
   "service": "backend",
   "workspaceFolder": "/workspace",

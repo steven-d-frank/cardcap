@@ -13,6 +13,8 @@ import "./app.css";
 function RootLayout(props: { children: JSX.Element }) {
   const location = useLocation();
 
+  const isLanding = createMemo(() => location.pathname === "/");
+
   const isPrivate = createMemo(() =>
     PRIVATE_ROUTES.some((r) => {
       const pattern = new RegExp(`^${r}(?:/|$)`);
@@ -64,27 +66,23 @@ function RootLayout(props: { children: JSX.Element }) {
 
   return (
     <MetaProvider>
-      <Title>Golid</Title>
-      <Meta property="og:title" content="Golid" />
-      <Meta property="og:description" content="Production-ready Go + SolidJS framework. Auth, 70+ components, SSR, real-time events, and one-command deployment." />
-      <Meta property="og:image" content="/images/golid-og.png" />
+      <Title>CardCap — Market Cap Tracking for Trading Cards</Title>
+      <Meta property="og:title" content="CardCap — Market Cap Tracking for Trading Cards" />
+      <Meta property="og:description" content="Track market caps for Yu-Gi-Oh!, Pokémon, and MTG cards based on real sold prices and graded population data." />
+      <Meta property="og:image" content="/images/cardcap-og.png" />
       <Meta property="og:type" content="website" />
-      <Meta name="twitter:card" content="summary" />
-      <Meta name="twitter:image" content="/images/golid-og.png" />
+      <Meta name="twitter:card" content="summary_large_image" />
+      <Meta name="twitter:image" content="/images/cardcap-og.png" />
 
       <div class="relative flex min-h-screen flex-col bg-background text-foreground overflow-x-hidden">
         <a href="#main-content" class="skip-link">Skip to main content</a>
 
-        <Show when={import.meta.env.VITE_DEMO_MODE === "true"}>
-          <div class="bg-primary text-primary-foreground text-center text-sm py-2 px-4 font-medium z-50">
-            Live demo — Data resets hourly. Accounts: admin@example.com / user@example.com (Password123!)
-          </div>
+        <Show when={!isLanding()}>
+          <Navbar
+            showMenuButton={ui.subscribeMobile() && isPrivate()}
+            onMenuToggle={() => ui.toggleSidebar()}
+          />
         </Show>
-
-        <Navbar
-          showMenuButton={ui.subscribeMobile() && isPrivate()}
-          onMenuToggle={() => ui.toggleSidebar()}
-        />
 
         <Show when={showSidebar()}>
           <Sidebar
@@ -97,8 +95,8 @@ function RootLayout(props: { children: JSX.Element }) {
           <main
             id="main-content"
             tabindex="-1"
-            class="flex flex-1 flex-col outline-none min-w-0 overflow-hidden transition-all duration-300 pt-16"
-            style={{ "margin-left": sidebarWidth() }}
+            class={`flex flex-1 flex-col outline-none min-w-0 overflow-hidden transition-all duration-300 ${isLanding() ? "" : "pt-16"}`}
+            style={{ "margin-left": isLanding() ? "0px" : sidebarWidth() }}
           >
             <ErrorBoundary
               fallback={(err, reset) => (
@@ -123,7 +121,9 @@ function RootLayout(props: { children: JSX.Element }) {
                 {props.children}
               </div>
             </ErrorBoundary>
-            <Footer minimal={isPrivate()} />
+            <Show when={!isLanding()}>
+              <Footer minimal={isPrivate()} />
+            </Show>
           </main>
         </Suspense>
       </div>

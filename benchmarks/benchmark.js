@@ -1,5 +1,5 @@
 /**
- * Golid API Benchmark Suite
+ * Cardcap API Benchmark Suite
  *
  * Requires k6: https://k6.io/docs/getting-started/installation/
  *

@@ -175,7 +175,7 @@ export default function ComponentsPage() {
 
   return (
     <div class="flex-1 bg-background p-8">
-      <Title>Components | Golid</Title>
+      <Title>Components | Cardcap</Title>
 
       <div class="max-w-7xl mx-auto">
         <HeroSection

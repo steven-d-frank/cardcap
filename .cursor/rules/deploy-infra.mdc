@@ -17,7 +17,7 @@ Two chains depending on whether the value is a secret or plain config.
 1. `backend/internal/config/config.go` — add field to `Config` struct + `os.Getenv()` in `Load()`
 2. `config/.env.local` — add with dev/sandbox value (local dev only)
 3. `config/.env.example` — add with placeholder
-4. Create in GCP Secret Manager: `echo -n "value" | gcloud secrets create golid-{name}-{env} --data-file=- --project=PROJECT`
+4. Create in GCP Secret Manager: `echo -n "value" | gcloud secrets create cardcap-{name}-{env} --data-file=- --project=PROJECT`
 5. `scripts/deploy.sh` — add `secret_exists` guard + append to `secrets` string in `ship_api()`
 6. Service constructor in `cmd/server/main.go` — pass `cfg.NewField` to the service
 
@@ -66,7 +66,7 @@ NewAPIKey: os.Getenv("NEW_API_KEY"),
 - **QA/Prod — `DB_PASSWORD`**: fetched from Secret Manager at deploy time by `deploy.sh`, used to construct `DATABASE_URL` (which requires the dynamic Cloud SQL socket path), then passed as `--set-env-vars`.
 - **QA/Prod — plain config** (`FRONTEND_URL`, `MAILGUN_DOMAIN`, etc.): stays in `config/.env.{qa,prod}`, passed as `--set-env-vars`.
 
-Secret naming: `golid-{name}-{env}` (e.g. `golid-jwt-secret-qa`). Env suffix prevents collisions when environments share a GCP project.
+Secret naming: `cardcap-{name}-{env}` (e.g. `cardcap-jwt-secret-qa`). Env suffix prevents collisions when environments share a GCP project.
 
 ## Nginx (Frontend)
 

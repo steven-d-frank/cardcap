@@ -6,10 +6,10 @@ import (
 
 	"github.com/hibiken/asynq"
 
-	"github.com/golid-ai/golid/backend/internal/config"
-	"github.com/golid-ai/golid/backend/internal/logger"
-	"github.com/golid-ai/golid/backend/internal/queue"
-	"github.com/golid-ai/golid/backend/internal/service"
+	"github.com/steven-d-frank/cardcap/backend/internal/config"
+	"github.com/steven-d-frank/cardcap/backend/internal/logger"
+	"github.com/steven-d-frank/cardcap/backend/internal/queue"
+	"github.com/steven-d-frank/cardcap/backend/internal/service"
 )
 
 func main() {

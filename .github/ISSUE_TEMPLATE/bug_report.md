@@ -1,6 +1,6 @@
 ---
 name: Bug Report
-about: Report a bug in Golid
+about: Report a bug in Cardcap
 title: "[Bug] "
 labels: bug
 ---

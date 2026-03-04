@@ -62,7 +62,7 @@ export default function Signup() {
 
   return (
     <>
-      <Title>Sign Up | Golid</Title>
+      <Title>Sign Up | Cardcap</Title>
       <div class="flex-1 flex flex-col items-center py-8 px-4">
         <div class="w-full max-w-lg">
           <div class="text-center mb-8">

@@ -37,7 +37,7 @@ func SetupTestDB() *TestDB {
 	}
 	if dbURL == "" {
 		// Default to local Docker database
-		dbURL = "postgres://dev:dev@localhost:5432/golid?sslmode=disable"
+		dbURL = "postgres://dev:dev@localhost:5432/cardcap?sslmode=disable"
 	}
 
 	config, err := pgxpool.ParseConfig(dbURL)
@@ -106,7 +106,7 @@ func SkipIfNoTestDB(t *testing.T) {
 		dbURL = os.Getenv("DATABASE_URL")
 	}
 	if dbURL == "" {
-		dbURL = "postgres://dev:dev@localhost:5432/golid?sslmode=disable"
+		dbURL = "postgres://dev:dev@localhost:5432/cardcap?sslmode=disable"
 	}
 
 	pool, err := pgxpool.New(ctx, dbURL)

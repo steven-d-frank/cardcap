@@ -20,7 +20,7 @@ func InitTracer(endpoint, serviceName, environment string, sampleRatio float64) 
 	}
 
 	if serviceName == "" {
-		serviceName = "golid-api"
+		serviceName = "cardcap-api"
 	}
 
 	ctx := context.Background()

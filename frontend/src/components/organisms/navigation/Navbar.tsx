@@ -68,7 +68,7 @@ export function Navbar(props: NavbarProps) {
           >
             <div class="px-1 py-1.5 rounded-lg transition-colors duration-300">
               <span class="text-lg font-bold tracking-tight text-midnight dark:text-mist group-hover:text-cta-green transition-colors duration-300">
-                Golid
+                Cardcap
               </span>
             </div>
           </A>

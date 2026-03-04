@@ -10,7 +10,7 @@ The rename tool (`make rename` / `go run ./cmd/rename`) rebrands the entire proj
 
 ## Domain-Safe Replacement
 
-`replaceInFileSafe` uses a null-byte placeholder to protect the project domain (`golid.ai`) from corruption. Without it, `"golid"→"myapp"` turns `golid.ai` into `myapp.ai`.
+`replaceInFileSafe` uses a null-byte placeholder to protect the project domain (`golid.ai`) from corruption. Without it, `"cardcap"→"myapp"` turns `golid.ai` into `myapp.ai`.
 
 ```go
 const placeholder = "\x00DOMAIN\x00"

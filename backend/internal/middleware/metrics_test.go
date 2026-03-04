@@ -8,7 +8,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/prometheus/client_golang/prometheus/testutil"
 
-	"github.com/golid-ai/golid/backend/internal/observability"
+	"github.com/steven-d-frank/cardcap/backend/internal/observability"
 )
 
 func TestMetrics_IncrementsCounter(t *testing.T) {

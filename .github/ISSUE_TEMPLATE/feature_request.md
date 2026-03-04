@@ -1,6 +1,6 @@
 ---
 name: Feature Request
-about: Suggest a feature for Golid
+about: Suggest a feature for Cardcap
 title: "[Feature] "
 labels: enhancement
 ---

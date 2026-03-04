@@ -1,5 +1,5 @@
 /**
- * GSAP Animation Utilities for Golid
+ * GSAP Animation Utilities for Cardcap
  *
  * This module provides GSAP-based animations for complex page-level effects,
  * scroll triggers, and timeline-based sequences.

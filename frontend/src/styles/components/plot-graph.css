@@ -3,19 +3,19 @@
    Styles the SVG output from Observable Plot to match the design system.
    ============================================================================ */
 
-.golid-plot-graph {
+.cardcap-plot-graph {
 	position: relative;
 	overflow: visible !important;
 }
 
-.golid-plot-graph svg {
+.cardcap-plot-graph svg {
 	max-width: 100%;
 	max-height: 100%;
 	display: block;
 	margin: 0 auto;
 }
 
-.golid-plot-graph figure {
+.cardcap-plot-graph figure {
 	margin: 0;
 	background: transparent !important;
 	width: 100% !important;
@@ -29,19 +29,19 @@
 }
 
 /* Industrial Tooltip */
-.golid-plot-graph [aria-label="tip"] {
+.cardcap-plot-graph [aria-label="tip"] {
 	--plot-tip-fill: #020617 !important;
 	--plot-tip-stroke: rgba(255,255,255,0.15) !important;
 	filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5));
 }
 
-.golid-plot-graph [aria-label="tip"] path {
+.cardcap-plot-graph [aria-label="tip"] path {
 	fill: var(--plot-tip-fill);
 	stroke: var(--plot-tip-stroke);
 	stroke-width: 1px;
 }
 
-.golid-plot-graph [aria-label="tip"] text {
+.cardcap-plot-graph [aria-label="tip"] text {
 	fill: #ffffff !important;
 	font-family: inherit;
 	font-weight: 600;
@@ -49,20 +49,20 @@
 }
 
 /* Hide axis labels */
-.golid-plot-graph [aria-label="y-axis label"],
-.golid-plot-graph [aria-label="x-axis label"],
-.golid-plot-graph text[aria-label="y-axis label"],
-.golid-plot-graph text[aria-label="x-axis label"],
-.golid-plot-graph g[aria-label*="axis label"] text {
+.cardcap-plot-graph [aria-label="y-axis label"],
+.cardcap-plot-graph [aria-label="x-axis label"],
+.cardcap-plot-graph text[aria-label="y-axis label"],
+.cardcap-plot-graph text[aria-label="x-axis label"],
+.cardcap-plot-graph g[aria-label*="axis label"] text {
 	display: none !important;
 }
 
 /* Legend positioning */
-.golid-plot-graph [aria-label="legend"],
-.golid-plot-graph .plot-swatches,
-.golid-plot-graph .plot-legend,
-.golid-plot-graph .plot-ramp,
-.golid-plot-graph [aria-label="ramp"] {
+.cardcap-plot-graph [aria-label="legend"],
+.cardcap-plot-graph .plot-swatches,
+.cardcap-plot-graph .plot-legend,
+.cardcap-plot-graph .plot-ramp,
+.cardcap-plot-graph [aria-label="ramp"] {
 	position: absolute !important;
 	top: -40px !important;
 	right: 0 !important;
@@ -83,10 +83,10 @@
 	pointer-events: auto !important;
 }
 
-.golid-plot-graph [aria-label="legend"] > div,
-.golid-plot-graph .plot-swatches > div,
-.golid-plot-graph .plot-legend > div,
-.golid-plot-graph .plot-swatches {
+.cardcap-plot-graph [aria-label="legend"] > div,
+.cardcap-plot-graph .plot-swatches > div,
+.cardcap-plot-graph .plot-legend > div,
+.cardcap-plot-graph .plot-swatches {
 	display: flex !important;
 	flex-direction: row !important;
 	justify-content: flex-end !important;
@@ -96,16 +96,16 @@
 	width: auto !important;
 }
 
-.golid-plot-graph .plot-swatches > div > span,
-.golid-plot-graph [aria-label="legend"] span {
+.cardcap-plot-graph .plot-swatches > div > span,
+.cardcap-plot-graph [aria-label="legend"] span {
 	display: flex !important;
 	align-items: center !important;
 	margin: 0 !important;
 	gap: 4px !important;
 }
 
-.golid-plot-graph .plot-ramp,
-.golid-plot-graph [aria-label="ramp"] {
+.cardcap-plot-graph .plot-ramp,
+.cardcap-plot-graph [aria-label="ramp"] {
 	height: 16px !important;
 	width: 100px !important;
 }

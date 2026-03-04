@@ -5,7 +5,7 @@ import { ui } from "~/lib/stores/ui";
 // CONSTANTS
 // ============================================================================
 
-const GolidMessages = [
+const CardcapMessages = [
   "Warming up the engines...",
   "Validating protocols...",
   "Matching vibes with ROI...",
@@ -28,7 +28,7 @@ export const LoadingOverlay: Component = () => {
     if (ui.subscribeLoading()) {
       // Start at random message if cycling
       if (!ui.loadingMessage) {
-        setCurrentMessageIndex(Math.floor(Math.random() * GolidMessages.length));
+        setCurrentMessageIndex(Math.floor(Math.random() * CardcapMessages.length));
       }
       setDots("");
 
@@ -38,7 +38,7 @@ export const LoadingOverlay: Component = () => {
           setDots("");
           // Only switch words if we are in cycle mode (no specific message)
           if (!ui.loadingMessage) {
-            setCurrentMessageIndex((prev) => (prev + 1) % GolidMessages.length);
+            setCurrentMessageIndex((prev) => (prev + 1) % CardcapMessages.length);
           }
         } else {
           setDots((prev) => prev + ".");
@@ -60,7 +60,7 @@ export const LoadingOverlay: Component = () => {
   });
 
   const baseMessage = () => {
-    const msg = ui.loadingMessage || GolidMessages[currentMessageIndex()];
+    const msg = ui.loadingMessage || CardcapMessages[currentMessageIndex()];
     return msg.replace(/\.+$/, "");
   };
 
@@ -100,7 +100,7 @@ export const LoadingOverlay: Component = () => {
               alt=""
               draggable={false}
             />
-            {/* Golid logo text */}
+            {/* Cardcap logo text */}
             <div class="loading-logo">uƒ</div>
           </div>
         </div>

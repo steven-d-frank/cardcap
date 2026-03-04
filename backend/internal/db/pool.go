@@ -8,7 +8,7 @@ import (
 
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	"github.com/golid-ai/golid/backend/internal/logger"
+	"github.com/steven-d-frank/cardcap/backend/internal/logger"
 )
 
 var (

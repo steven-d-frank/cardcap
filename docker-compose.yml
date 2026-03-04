@@ -1,27 +1,27 @@
 # ==============================================================================
-# Golid - Docker Compose
+# Cardcap - Docker Compose
 # Go + SolidJS Monorepo Development Environment
 # ==============================================================================
 
-name: golid
+name: cardcap
 
 services:
   # ==========================================================================
   # PostgreSQL Database
   # ==========================================================================
   db:
-    container_name: golid-db
+    container_name: cardcap-db
     image: postgres:16-alpine
     ports:
       - "5432:5432"
     volumes:
-      - golid_postgres_data:/var/lib/postgresql/data
+      - cardcap_postgres_data:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: ${DB_USER:-dev}
       POSTGRES_PASSWORD: ${DB_PASSWORD:-dev}
-      POSTGRES_DB: ${DB_NAME:-golid}
+      POSTGRES_DB: ${DB_NAME:-cardcap}
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-dev} -d ${DB_NAME:-golid}"]
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-dev} -d ${DB_NAME:-cardcap}"]
       interval: 10s
       timeout: 10s
       retries: 10
@@ -30,7 +30,7 @@ services:
   # Go Backend API
   # ==========================================================================
   backend:
-    container_name: golid-backend
+    container_name: cardcap-backend
     build:
       context: ./backend
       dockerfile: Dockerfile.dev
@@ -43,7 +43,7 @@ services:
       - ./backend:/app:cached
     environment:
       DB_HOST: db
-      DATABASE_URL: postgres://${DB_USER:-dev}:${DB_PASSWORD:-dev}@db:5432/${DB_NAME:-golid}?sslmode=disable
+      DATABASE_URL: postgres://${DB_USER:-dev}:${DB_PASSWORD:-dev}@db:5432/${DB_NAME:-cardcap}?sslmode=disable
       AUTH_RATE_LIMIT: 100
     command: >
       sh -c '
@@ -72,7 +72,7 @@ services:
   # Normal dev: Frontend auto-starts as VS Code task with HMR on port 3000
   # Docker mode: docker compose --profile frontend-docker up
   frontend:
-    container_name: golid-frontend
+    container_name: cardcap-frontend
     profiles:
       - frontend-docker
     build:
@@ -95,7 +95,7 @@ services:
   # ==========================================================================
   # docker compose --profile production up
   redis:
-    container_name: golid-redis
+    container_name: cardcap-redis
     image: redis:7-alpine
     ports:
       - "6379:6379"
@@ -112,7 +112,7 @@ services:
   # ==========================================================================
   # Requires Redis. Shares backend image with different entrypoint.
   worker:
-    container_name: golid-worker
+    container_name: cardcap-worker
     build:
       context: ./backend
       dockerfile: Dockerfile.dev
@@ -122,7 +122,7 @@ services:
         required: false
     environment:
       DB_HOST: db
-      DATABASE_URL: postgres://${DB_USER:-dev}:${DB_PASSWORD:-dev}@db:5432/${DB_NAME:-golid}?sslmode=disable
+      DATABASE_URL: postgres://${DB_USER:-dev}:${DB_PASSWORD:-dev}@db:5432/${DB_NAME:-cardcap}?sslmode=disable
       REDIS_URL: redis://redis:6379/0
     volumes:
       - ./backend:/app:cached
@@ -133,4 +133,4 @@ services:
       - production
 
 volumes:
-  golid_postgres_data:
+  cardcap_postgres_data:

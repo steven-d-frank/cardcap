@@ -5,7 +5,7 @@ import (
 
 	"github.com/hibiken/asynq"
 
-	"github.com/golid-ai/golid/backend/internal/service"
+	"github.com/steven-d-frank/cardcap/backend/internal/service"
 )
 
 type authServicer interface {

@@ -32,14 +32,14 @@ type Config struct {
 	AllowedOrigins []string
 
 	// Application
-	AppName string // Used in emails, branding (default: "Golid")
+	AppName string // Used in emails, branding (default: "Cardcap")
 
 	// Redis (optional — enables job queue + persistent rate limiting)
 	RedisURL string
 
 	// Observability (optional)
 	OTELEndpoint    string  // empty = no tracing
-	OTELServiceName string  // default: "golid-api"
+	OTELServiceName string  // default: "cardcap-api"
 	OTELSampleRatio float64 // 0.0-1.0, default 1.0 (all requests). Use 0.1 for production.
 	MetricsEnabled  bool    // false = no /metrics endpoint
 
@@ -100,10 +100,10 @@ func Load() (*Config, error) {
 		PaginationDefault: getInt("PAGINATION_DEFAULT", 20),
 		PaginationMax:     getInt("PAGINATION_MAX", 100),
 		FeatureCacheTTL:    getDuration("FEATURE_CACHE_TTL", 30*time.Second),
-		AppName:            getEnv("APP_NAME", "Golid"),
+		AppName:            getEnv("APP_NAME", "Cardcap"),
 		RedisURL:           os.Getenv("REDIS_URL"),
 		OTELEndpoint:       os.Getenv("OTEL_ENDPOINT"),
-		OTELServiceName:    getEnv("OTEL_SERVICE_NAME", "golid-api"),
+		OTELServiceName:    getEnv("OTEL_SERVICE_NAME", "cardcap-api"),
 		OTELSampleRatio:    getFloat("OTEL_SAMPLE_RATIO", 1.0),
 		MetricsEnabled:     os.Getenv("METRICS_ENABLED") == "true",
 		AllowedOrigins:     getAllowedOrigins(),

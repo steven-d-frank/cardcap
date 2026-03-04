@@ -3,7 +3,7 @@ package handler
 import (
 	"github.com/labstack/echo/v4"
 
-	"github.com/golid-ai/golid/backend/internal/apperror"
+	"github.com/steven-d-frank/cardcap/backend/internal/apperror"
 )
 
 // contextString safely extracts a string value from the echo context.

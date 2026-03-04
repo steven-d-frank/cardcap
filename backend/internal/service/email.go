@@ -10,7 +10,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/golid-ai/golid/backend/internal/logger"
+	"github.com/steven-d-frank/cardcap/backend/internal/logger"
 )
 
 // EmailConfig holds Mailgun configuration.
@@ -22,7 +22,7 @@ type EmailConfig struct {
 	FromName         string        // Sender name
 	FrontendURL      string        // Frontend URL for generating links
 	DevEmailOverride string        // If set, all outbound emails go to this address (dev/testing)
-	AppName          string        // Application name used in emails (default: "Golid")
+	AppName          string        // Application name used in emails (default: "Cardcap")
 	Timeout          time.Duration // HTTP client timeout (default: 30s)
 	PasswordResetTTL time.Duration // Password reset link expiry (used in email copy)
 }
@@ -40,7 +40,7 @@ func NewEmailService(config EmailConfig) *EmailService {
 		config.BaseURL = "https://api.mailgun.net"
 	}
 	if config.AppName == "" {
-		config.AppName = "Golid"
+		config.AppName = "Cardcap"
 	}
 	if config.FromName == "" {
 		config.FromName = config.AppName

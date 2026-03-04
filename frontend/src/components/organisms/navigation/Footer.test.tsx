@@ -23,5 +23,5 @@ test("renders minimal footer without nav links", () => {
 
 test("minimal footer still shows copyright", () => {
   render(() => <Footer minimal />);
-  expect(screen.getByText(/Golid/)).toBeInTheDocument();
+  expect(screen.getByText(/Cardcap/)).toBeInTheDocument();
 });

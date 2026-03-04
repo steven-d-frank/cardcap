@@ -7,7 +7,7 @@ coverage:
     patch: off
 
 fixes:
-  - "github.com/golid-ai/golid/backend/::backend/"
+  - "github.com/steven-d-frank/cardcap/backend/::backend/"
 
 flags:
   backend:

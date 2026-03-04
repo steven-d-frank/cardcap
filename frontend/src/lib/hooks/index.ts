@@ -1,5 +1,5 @@
 /**
- * Shared hooks for Golid frontend
+ * Shared hooks for Cardcap frontend
  */
 
 export {

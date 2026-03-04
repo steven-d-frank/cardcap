@@ -30,9 +30,9 @@ describe("Navbar", () => {
     vi.clearAllMocks();
   });
 
-  it("renders the Golid logo", () => {
+  it("renders the Cardcap logo", () => {
     render(() => <Navbar />);
-    expect(screen.getByText("Golid")).toBeInTheDocument();
+    expect(screen.getByText("Cardcap")).toBeInTheDocument();
   });
 
   it("renders home link", () => {

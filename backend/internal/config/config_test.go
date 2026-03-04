@@ -4,7 +4,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/golid-ai/golid/backend/internal/config"
+	"github.com/steven-d-frank/cardcap/backend/internal/config"
 )
 
 func TestLoad_RequiredFields(t *testing.T) {
